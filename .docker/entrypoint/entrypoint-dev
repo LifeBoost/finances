@@ -1,0 +1,21 @@
+#!/bin/sh
+set -eu
+
+# ----------------------------------------------------------------------------------------------------------------------
+
+echo "► Starting Development Entrypoint..."
+
+# ----------------------------------------------------------------------------------------------------------------------
+
+echo "► Running post-build script(s)..."
+echo "► Running Composer Install..."
+#composer install
+
+echo "► Checking Platform Requirements"
+#composer check-platform-reqs
+
+# Run custom ad-hoc pre-run script
+echo "► Running custom pre-run (dev) script..."
+
+# Run Entrypoint and pass CMD to it (Don't forget exec)
+exec entrypoint-base "${@}"
