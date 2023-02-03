@@ -1,0 +1,15 @@
+App\Application\Wallet\Create\CreateWalletCommand:
+  properties:
+    name:
+      - Sequentially:
+        - NotBlank:
+            message: 'Name is required'
+        - Length:
+            min: 2
+            max: 240
+            minMessage: 'Name must be at least {{ limit }} characters long'
+            maxMessage: 'Name cannot be longer than {{ limit }} characters'
+    startBalance:
+      - PositiveOrZero: ~
+    currency:
+      - Currency: ~

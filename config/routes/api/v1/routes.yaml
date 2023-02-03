@@ -1,0 +1,4 @@
+wallet.create:
+  path: /wallets
+  controller: App\UI\API\Wallet\Create\CreateWalletAction
+  methods: [POST]
