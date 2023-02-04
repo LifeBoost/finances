@@ -10,6 +10,7 @@ use App\SharedKernel\Exception\NotFoundException;
 interface WalletRepository
 {
     public function store(Wallet $wallet): void;
+
     public function existsByName(string $name): bool;
 
     /**

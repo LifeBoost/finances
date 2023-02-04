@@ -36,3 +36,54 @@ App\Application\Wallet\Delete\DeleteWalletCommand:
   properties:
     id:
       - Uuid: ~
+
+App\Application\Category\Create\CreateCategoryCommand:
+  properties:
+    type:
+      - Sequentially:
+          - NotBlank:
+              message: 'Type is required'
+          - Choice:
+              choices: [expense, income]
+              message: 'Type is invalid'
+    name:
+      - Sequentially:
+          - NotBlank:
+              message: 'Name is required'
+          - Length:
+              min: 2
+              max: 240
+              minMessage: 'Name must be at least {{ limit }} characters long'
+              maxMessage: 'Name cannot be longer than {{ limit }} characters'
+    icon:
+      - NotBlank:
+          message: 'Icon is required'
+
+App\Application\Category\Update\UpdateCategoryCommand:
+  properties:
+    id:
+      - Uuid: ~
+    type:
+      - Sequentially:
+          - NotBlank:
+              message: 'Type is required'
+          - Choice:
+              choices: [expense, income]
+              message: 'Type is invalid'
+    name:
+      - Sequentially:
+          - NotBlank:
+              message: 'Name is required'
+          - Length:
+              min: 2
+              max: 240
+              minMessage: 'Name must be at least {{ limit }} characters long'
+              maxMessage: 'Name cannot be longer than {{ limit }} characters'
+    icon:
+      - NotBlank:
+          message: 'Icon is required'
+
+App\Application\Category\Delete\DeleteCategoryCommand:
+  properties:
+    id:
+      - Uuid: ~

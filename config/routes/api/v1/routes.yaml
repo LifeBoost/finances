@@ -22,3 +22,28 @@ wallets.one:
   path: /wallets/{id}
   controller: App\UI\API\Wallet\GetOneWalletByIdAction
   methods: [GET]
+
+categories.create:
+  path: /categories
+  controller: App\UI\API\Category\CreateCategoryAction
+  methods: [POST]
+
+categories.update:
+  path: /categories/{id}
+  controller: App\UI\API\Category\UpdateCategoryAction
+  methods: [PUT]
+
+categories.delete:
+  path: /categories/{id}
+  controller: App\UI\API\Category\DeleteCategoryAction
+  methods: [DELETE]
+
+categories.all:
+  path: /categories
+  controller: App\UI\API\Category\GetAllCategoriesAction
+  methods: [GET]
+
+categories.one:
+  path: /categories/{id}
+  controller: App\UI\API\Category\GetOneCategoryByIdAction
+  methods: [GET]
