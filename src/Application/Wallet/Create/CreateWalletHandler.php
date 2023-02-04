@@ -15,20 +15,16 @@ use App\SharedKernel\Messenger\CommandHandlerInterface;
 final class CreateWalletHandler implements CommandHandlerInterface
 {
     public function __construct(
-        private readonly UserContext $userContext,
         private readonly WalletRepository $repository
     ){}
 
     public function __invoke(CreateWalletCommand $command): Id
     {
-        $userId = $this->userContext->getUserId();
-
-        if ($this->repository->exists($userId, $command->name)) {
+        if ($this->repository->existsByName($command->name)) {
             throw new DomainException('Wallet with given name already exists');
         }
 
         $wallet = Wallet::create(
-            $this->userContext->getUserId(),
             $command->name,
             $command->startBalance,
             Currency::from($command->currency),

@@ -13,3 +13,26 @@ App\Application\Wallet\Create\CreateWalletCommand:
       - PositiveOrZero: ~
     currency:
       - Currency: ~
+
+App\Application\Wallet\Update\UpdateWalletCommand:
+  properties:
+    id:
+      - Uuid: ~
+    name:
+      - Sequentially:
+          - NotBlank:
+              message: 'Name is required'
+          - Length:
+              min: 2
+              max: 240
+              minMessage: 'Name must be at least {{ limit }} characters long'
+              maxMessage: 'Name cannot be longer than {{ limit }} characters'
+    startBalance:
+      - PositiveOrZero: ~
+    currency:
+      - Currency: ~
+
+App\Application\Wallet\Delete\DeleteWalletCommand:
+  properties:
+    id:
+      - Uuid: ~

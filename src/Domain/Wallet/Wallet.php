@@ -11,35 +11,34 @@ final class Wallet
 {
     public function __construct(
         private WalletId $id,
-        private UserId $userId,
         private string $name,
         private int $startBalance,
         private Currency $currency,
     ){}
 
     public static function create(
-        UserId $userId,
         string $name,
         int $startBalance,
         Currency $currency,
     ): self {
         return new self(
             WalletId::generate(),
-            $userId,
             $name,
             $startBalance,
             $currency,
         );
     }
 
+    public function update(string $name, int $startBalance, Currency $currency): void
+    {
+        $this->name = $name;
+        $this->startBalance = $startBalance;
+        $this->currency = $currency;
+    }
+
     public function getId(): WalletId
     {
         return $this->id;
-    }
-
-    public function getUserId(): UserId
-    {
-        return $this->userId;
     }
 
     public function getName(): string

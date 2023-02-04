@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace App\UI\API;
 
 use App\SharedKernel\Exception\DomainException;
+use App\SharedKernel\Exception\NotFoundException;
 use Assert\InvalidArgumentException;
 use Assert\LazyAssertionException;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
@@ -68,9 +69,21 @@ final class ErrorHandlerMiddleware implements EventSubscriberInterface
                 $event->setResponse(
                     new JsonResponse([
                         'errors' => [
-                            'message' => $exception->getMessage(),
+                            ['message' => $exception->getMessage()]
                         ]
                     ], Response::HTTP_CONFLICT)
+                );
+
+                return;
+            }
+
+            if ($exception instanceof NotFoundException) {
+                $event->setResponse(
+                    new JsonResponse([
+                        'errors' => [
+                            ['message' => $exception->getMessage()]
+                        ]
+                    ], Response::HTTP_NOT_FOUND)
                 );
 
                 return;
