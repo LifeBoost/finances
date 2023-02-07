@@ -47,3 +47,28 @@ categories.one:
   path: /categories/{id}
   controller: App\UI\API\Category\GetOneCategoryByIdAction
   methods: [GET]
+
+transactions.create:
+  path: /transactions
+  controller: App\UI\API\Transaction\CreateTransactionAction
+  methods: [POST]
+
+transactions.update:
+  path: /transactions/{id}
+  controller: App\UI\API\Transaction\UpdateTransactionAction
+  methods: [PUT]
+
+transactions.delete:
+  path: /transactions/{id}
+  controller: App\UI\API\Transaction\DeleteTransactionAction
+  methods: [DELETE]
+
+transactions.all:
+  path: /transactions
+  controller: App\UI\API\Transaction\GetAllTransactionsAction
+  methods: [GET]
+
+transactions.one:
+  path: /transactions/{id}
+  controller: App\UI\API\Transaction\GetOneTransactionByIdAction
+  methods: [GET]

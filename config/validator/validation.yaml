@@ -87,3 +87,74 @@ App\Application\Category\Delete\DeleteCategoryCommand:
   properties:
     id:
       - Uuid: ~
+
+App\Application\Transaction\Create\CreateTransactionCommand:
+  properties:
+    type:
+      - Sequentially:
+          - NotBlank:
+              message: 'Type is required'
+          - Choice:
+              choices: [expense, income, transfer]
+              message: 'Type is invalid'
+    sourceWalletId:
+      - Sequentially:
+          - NotBlank:
+              message: 'Source wallet ID is required'
+          - Uuid: ~
+    targetWalletId:
+      - When:
+          expression: "value != null"
+          constraints:
+            - Uuid: ~
+    categoryId:
+      - When:
+          expression: "value != null"
+          constraints:
+            - Uuid: ~
+    date:
+      - Date: ~
+    description:
+      - NotBlank:
+          message: 'Description is required'
+    amount:
+      - Positive: ~
+
+App\Application\Transaction\Update\UpdateTransactionCommand:
+  properties:
+    id:
+      - Uuid: ~
+    type:
+      - Sequentially:
+          - NotBlank:
+              message: 'Type is required'
+          - Choice:
+              choices: [expense, income, transfer]
+              message: 'Type is invalid'
+    sourceWalletId:
+      - Sequentially:
+          - NotBlank:
+              message: 'Source wallet ID is required'
+          - Uuid: ~
+    targetWalletId:
+      - When:
+          expression: "value != null"
+          constraints:
+            - Uuid: ~
+    categoryId:
+      - When:
+          expression: "value != null"
+          constraints:
+            - Uuid: ~
+    date:
+      - Date: ~
+    description:
+      - NotBlank:
+          message: 'Description is required'
+    amount:
+      - Positive: ~
+
+App\Application\Transaction\Delete\DeleteTransactionCommand:
+  properties:
+    id:
+      - Uuid: ~
