@@ -19,6 +19,7 @@ final class JWTTokenUserContext implements UserContext
 
     public function __construct(
         private readonly string $jwtSecretKey,
+        private readonly string $jwtAlgorithm,
         private readonly RequestStack $requestStack
     ){}
 
@@ -26,7 +27,7 @@ final class JWTTokenUserContext implements UserContext
     {
         $jwtToken = $this->getJwtTokenFromHeader();
 
-        $result = JWT::decode($jwtToken, new Key($this->jwtSecretKey, 'HS256'));
+        $result = JWT::decode($jwtToken, new Key($this->jwtSecretKey, $this->jwtAlgorithm));
 
         return UserId::fromString($result->userId);
     }

@@ -4,6 +4,7 @@ services:
     _defaults:
         bind:
             $jwtSecretKey: '%env(resolve:JWT_SECRET_KEY)%'
+            $jwtAlgorithm: '%env(resolve:JWT_ALGORITHM)%'
         autowire: true
         autoconfigure: true
     _instanceof:
