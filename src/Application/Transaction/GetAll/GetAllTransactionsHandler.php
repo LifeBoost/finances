@@ -43,10 +43,8 @@ final class GetAllTransactionsHandler implements QueryHandlerInterface
         if ($query->dateFrom && $query->dateTo) {
             $queryBuilder
                 ->andWhere('date BETWEEN :dateFrom and :dateTo')
-                ->setParameters([
-                    'dateFrom' => DateTimeImmutable::createFromFormat('Y-m-d', $query->dateFrom)->format('Y-m-d 00:00:00'),
-                    'dateTo' => DateTimeImmutable::createFromFormat('Y-m-d', $query->dateTo)->format('Y-m-d 00:00:00'),
-                ]);
+                ->setParameter('dateFrom', DateTimeImmutable::createFromFormat('Y-m-d', $query->dateFrom)->format('Y-m-d 00:00:00'))
+                ->setParameter('dateTo', DateTimeImmutable::createFromFormat('Y-m-d', $query->dateTo)->format('Y-m-d 00:00:00'));
         }
 
         $rows = $queryBuilder->executeQuery()->fetchAllAssociative();
