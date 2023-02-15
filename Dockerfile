@@ -92,11 +92,11 @@ ENV COMPOSER_AUTH $COMPOSER_AUTH
 
 WORKDIR /app
 
-#COPY $APP_BASE_DIR/composer.json composer.json
-#COPY $APP_BASE_DIR/composer.lock composer.lock
+COPY $APP_BASE_DIR/composer.json composer.json
+COPY $APP_BASE_DIR/composer.lock composer.lock
 #
-#RUN composer config platform.php ${PHP_VERSION}; \
-#    composer install -n --no-progress --ignore-platform-reqs --no-dev --prefer-dist --no-scripts --no-autoloader
+RUN composer config platform.php ${PHP_VERSION}; \
+    composer install -n --no-progress --ignore-platform-reqs --no-dev --prefer-dist --no-scripts --no-autoloader
 
 # =========== #
 #     PROD    #
