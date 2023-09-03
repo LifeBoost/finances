@@ -26,7 +26,8 @@ final class TransactionController extends AbstractController
 {
     public function __construct(
         private readonly MessageBusInterface $bus,
-    ){}
+    ) {
+    }
 
     #[Route('', name: 'create', methods: ['POST'])]
     public function create(#[MapRequestPayload] CreateTransactionCommand $command): Response

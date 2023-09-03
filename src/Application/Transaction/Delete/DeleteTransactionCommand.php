@@ -6,5 +6,7 @@ namespace App\Application\Transaction\Delete;
 
 final class DeleteTransactionCommand
 {
-    public function __construct(public readonly string $id){}
+    public function __construct(public readonly string $id)
+    {
+    }
 }

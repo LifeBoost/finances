@@ -5,7 +5,6 @@ declare(strict_types=1);
 namespace App\Domain\Wallet;
 
 use App\Domain\Currency\Currency;
-use App\Domain\User\UserId;
 
 final class Wallet
 {
@@ -14,7 +13,8 @@ final class Wallet
         private string $name,
         private int $startBalance,
         private Currency $currency,
-    ){}
+    ) {
+    }
 
     public static function create(
         string $name,

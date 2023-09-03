@@ -11,7 +11,8 @@ final class Category
         private CategoryType $type,
         private string $name,
         private string $icon,
-    ){}
+    ) {
+    }
 
     public static function create(
         CategoryType $type,

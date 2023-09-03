@@ -11,7 +11,9 @@ use App\SharedKernel\Messenger\CommandHandlerInterface;
 
 final class DeleteWalletHandler implements CommandHandlerInterface
 {
-    public function __construct(private readonly WalletRepository $repository){}
+    public function __construct(private readonly WalletRepository $repository)
+    {
+    }
 
     /**
      * @throws NotFoundException

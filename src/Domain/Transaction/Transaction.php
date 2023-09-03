@@ -23,7 +23,7 @@ final class Transaction
         private DateTimeImmutable $date,
         private string $description,
         private int $amount,
-    ){
+    ) {
         $this->validateType($this->type, $this->targetWalletId, $this->categoryId);
     }
 

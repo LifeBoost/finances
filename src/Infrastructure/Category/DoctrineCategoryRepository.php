@@ -16,7 +16,9 @@ use Doctrine\DBAL\Exception;
 
 final class DoctrineCategoryRepository implements CategoryRepository
 {
-    public function __construct(private readonly Connection $connection, private readonly UserContext $userContext){}
+    public function __construct(private readonly Connection $connection, private readonly UserContext $userContext)
+    {
+    }
 
     /**
      * @throws Exception

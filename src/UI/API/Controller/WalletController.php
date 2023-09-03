@@ -16,7 +16,6 @@ use App\UI\API\Request\Wallet\CreateWalletRequest;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Response;
-use Symfony\Component\HttpKernel\Attribute\MapQueryString;
 use Symfony\Component\HttpKernel\Attribute\MapRequestPayload;
 use Symfony\Component\Messenger\MessageBusInterface;
 use Symfony\Component\Messenger\Stamp\HandledStamp;
@@ -28,7 +27,8 @@ final class WalletController extends AbstractController
     public function __construct(
         private readonly MessageBusInterface $commandBus,
         private readonly MessageBusInterface $queryBus,
-    ){}
+    ) {
+    }
 
     #[Route('', name: 'create', methods: ['POST'])]
     public function create(#[MapRequestPayload] CreateWalletRequest $request): Response

@@ -6,5 +6,7 @@ namespace App\Application\Category\GetOneById;
 
 final class GetOneCategoryByIdQuery
 {
-    public function __construct(public readonly string $id){}
+    public function __construct(public readonly string $id)
+    {
+    }
 }

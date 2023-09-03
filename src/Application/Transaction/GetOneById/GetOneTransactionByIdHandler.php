@@ -15,7 +15,8 @@ final class GetOneTransactionByIdHandler implements QueryHandlerInterface
     public function __construct(
         private readonly UserContext $userContext,
         private readonly Connection $connection,
-    ){}
+    ) {
+    }
 
     /**
      * @throws Exception

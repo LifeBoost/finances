@@ -13,7 +13,9 @@ use App\SharedKernel\Messenger\CommandHandlerInterface;
 
 final class UpdateCategoryHandler implements CommandHandlerInterface
 {
-    public function __construct(private readonly CategoryRepository $repository){}
+    public function __construct(private readonly CategoryRepository $repository)
+    {
+    }
 
     /**
      * @throws NotFoundException

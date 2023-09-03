@@ -8,9 +8,7 @@ use App\Domain\User\UserContext;
 use App\Domain\User\UserId;
 use Firebase\JWT\JWT;
 use Firebase\JWT\Key;
-use Ramsey\Uuid\Uuid;
 use Symfony\Component\HttpFoundation\RequestStack;
-use Symfony\Component\Routing\RequestContextAwareInterface;
 
 final class JWTTokenUserContext implements UserContext
 {
@@ -21,7 +19,8 @@ final class JWTTokenUserContext implements UserContext
         private readonly string $jwtSecretKey,
         private readonly string $jwtAlgorithm,
         private readonly RequestStack $requestStack
-    ){}
+    ) {
+    }
 
     public function getUserId(): UserId
     {

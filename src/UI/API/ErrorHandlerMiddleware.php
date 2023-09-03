@@ -6,8 +6,6 @@ namespace App\UI\API;
 
 use App\SharedKernel\Exception\DomainException;
 use App\SharedKernel\Exception\NotFoundException;
-use Assert\InvalidArgumentException;
-use Assert\LazyAssertionException;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Response;
@@ -95,7 +93,7 @@ final class ErrorHandlerMiddleware implements EventSubscriberInterface
 
                 if (
                     isset($parameters[self::SYMFONY_VALIDATION_PARAMETERS_TYPE_KEY], $parameters[self::SYMFONY_VALIDATION_PARAMETERS_HINT_KEY])
-                    && $parameters[self::SYMFONY_VALIDATION_PARAMETERS_TYPE_KEY]=== self::SYMFONY_VALIDATION_UNKNOWN_TYPE
+                    && $parameters[self::SYMFONY_VALIDATION_PARAMETERS_TYPE_KEY] === self::SYMFONY_VALIDATION_UNKNOWN_TYPE
                 ) {
                     $errors = [
                         [

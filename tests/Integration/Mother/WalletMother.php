@@ -1,4 +1,6 @@
-<?php /** @noinspection PhpUnhandledExceptionInspection */
+<?php
+
+/** @noinspection PhpUnhandledExceptionInspection */
 
 declare(strict_types=1);
 
@@ -11,7 +13,9 @@ final class WalletMother
 {
     public const URL_PATTERN = 'api/v1/wallets';
 
-    public function __construct(private readonly KernelBrowser $client){}
+    public function __construct(private readonly KernelBrowser $client)
+    {
+    }
 
     public function create(string $name = 'Wallet 1', int $startBalance = 120, string $currency = 'PLN'): array
     {

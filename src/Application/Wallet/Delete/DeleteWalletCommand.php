@@ -6,5 +6,7 @@ namespace App\Application\Wallet\Delete;
 
 final class DeleteWalletCommand
 {
-    public function __construct(public readonly string $id){}
+    public function __construct(public readonly string $id)
+    {
+    }
 }

@@ -11,7 +11,9 @@ use App\SharedKernel\Messenger\CommandHandlerInterface;
 
 final class DeleteTransactionHandler implements CommandHandlerInterface
 {
-    public function __construct(private readonly TransactionRepository $repository){}
+    public function __construct(private readonly TransactionRepository $repository)
+    {
+    }
 
     /**
      * @throws NotFoundException

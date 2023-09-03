@@ -10,7 +10,9 @@ use App\SharedKernel\Messenger\CommandHandlerInterface;
 
 final class DeleteCategoryHandler implements CommandHandlerInterface
 {
-    public function __construct(private readonly CategoryRepository $repository){}
+    public function __construct(private readonly CategoryRepository $repository)
+    {
+    }
 
     public function __invoke(DeleteCategoryCommand $command): void
     {

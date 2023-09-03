@@ -14,7 +14,8 @@ final class UpdateWalletHandler implements CommandHandlerInterface
 {
     public function __construct(
         private readonly WalletRepository $walletRepository
-    ){}
+    ) {
+    }
 
     /**
      * @throws NotFoundException

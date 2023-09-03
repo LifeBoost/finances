@@ -6,7 +6,6 @@ namespace App\Infrastructure\Wallet;
 
 use App\Domain\Currency\Currency;
 use App\Domain\User\UserContext;
-use App\Domain\User\UserId;
 use App\Domain\Wallet\Wallet;
 use App\Domain\Wallet\WalletId;
 use App\Domain\Wallet\WalletRepository;
@@ -21,7 +20,8 @@ final class DoctrineWalletRepository implements WalletRepository
     public function __construct(
         private readonly Connection $connection,
         private readonly UserContext $userContext,
-    ){}
+    ) {
+    }
 
     /**
      * @throws Throwable

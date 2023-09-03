@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace App\Domain\Wallet;
 
-use App\Domain\User\UserId;
 use App\SharedKernel\Exception\NotFoundException;
 
 interface WalletRepository

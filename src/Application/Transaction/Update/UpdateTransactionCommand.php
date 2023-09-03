@@ -15,5 +15,6 @@ final class UpdateTransactionCommand
         public readonly string $date,
         public readonly string $description,
         public readonly int $amount,
-    ){}
+    ) {
+    }
 }

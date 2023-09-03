@@ -3,11 +3,14 @@
 declare(strict_types=1);
 
 namespace App\SharedKernel;
+
 use Ramsey\Uuid\Uuid;
 
 abstract class Id
 {
-    public function __construct(private readonly string $id){}
+    public function __construct(private readonly string $id)
+    {
+    }
 
     public static function generate(): static
     {

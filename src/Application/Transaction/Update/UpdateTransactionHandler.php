@@ -16,7 +16,9 @@ use DateTimeImmutable;
 
 final class UpdateTransactionHandler implements CommandHandlerInterface
 {
-    public function __construct(private readonly TransactionRepository $repository){}
+    public function __construct(private readonly TransactionRepository $repository)
+    {
+    }
 
     /**
      * @throws NotFoundException

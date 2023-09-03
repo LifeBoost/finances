@@ -6,5 +6,7 @@ namespace App\Application\Wallet\GetOneById;
 
 final class GetOneWalletByIdQuery
 {
-    public function __construct(public readonly string $id){}
+    public function __construct(public readonly string $id)
+    {
+    }
 }

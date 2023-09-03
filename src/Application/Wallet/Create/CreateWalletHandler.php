@@ -5,7 +5,6 @@ declare(strict_types=1);
 namespace App\Application\Wallet\Create;
 
 use App\Domain\Currency\Currency;
-use App\Domain\User\UserContext;
 use App\Domain\Wallet\Wallet;
 use App\Domain\Wallet\WalletRepository;
 use App\SharedKernel\Exception\DomainException;
@@ -16,7 +15,8 @@ final class CreateWalletHandler implements CommandHandlerInterface
 {
     public function __construct(
         private readonly WalletRepository $repository
-    ){}
+    ) {
+    }
 
     public function __invoke(CreateWalletCommand $command): Id
     {
