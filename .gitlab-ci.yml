@@ -8,8 +8,6 @@ build:
   image: feejkr/lb-finances:latest
   script:
     - composer install
-  artifacts:
-    - vendor/
 
 tests:
   stage: test
