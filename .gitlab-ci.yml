@@ -1,0 +1,22 @@
+stages:
+  - build
+  - test
+  - deploy
+
+build:
+  stage: build
+  image: feejkr/lb-finances:latest
+  script:
+    - composer install
+  artifacts:
+    - vendor/
+
+tests:
+  stage: test
+  image: feejkr/lb-finances:latest
+  before_script:
+    - composer install
+  script:
+    - php bin/phpunit
+  services:
+    - mysql:8
