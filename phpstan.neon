@@ -1,0 +1,14 @@
+includes:
+    - phpstan-baseline.php
+parameters:
+  level: 6
+  phpVersion: 80100
+  checkMissingIterableValueType: false
+  checkGenericClassInNonGenericObjectType: false
+  tmpDir: cache/phpstan/
+  treatPhpDocTypesAsCertain: false
+  paths:
+    - src
+  parallel:
+    processTimeout: 720.0
+    jobSize: 100
