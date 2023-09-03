@@ -5,13 +5,13 @@ stages:
 
 build:
   stage: build
-  image: feejkr/lb-finances:latest
+  image: feejkr/lb-finances:v1.0.0
   script:
     - composer install
 
 tests:
   stage: test
-  image: feejkr/lb-finances:latest
+  image: feejkr/lb-finances:v1.0.0
   before_script:
     - composer install
   script:
