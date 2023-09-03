@@ -7,7 +7,7 @@ namespace App\Application\Transaction\Update;
 final class UpdateTransactionCommand
 {
     public function __construct(
-        public readonly string $id,
+        public string $id,
         public readonly string $type,
         public readonly string $sourceWalletId,
         public readonly ?string $targetWalletId,

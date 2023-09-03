@@ -11,5 +11,6 @@ final class UpdateWalletCommand
         public readonly string $name,
         public readonly int $startBalance,
         public readonly string $currency,
-    ){}
+    ) {
+    }
 }

@@ -12,13 +12,19 @@ use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpKernel\Event\ExceptionEvent;
+use Symfony\Component\HttpKernel\Exception\HttpException;
 use Symfony\Component\HttpKernel\KernelEvents;
 use Symfony\Component\Messenger\Exception\HandlerFailedException;
 use Symfony\Component\Messenger\Exception\ValidationFailedException;
 use Symfony\Component\Validator\ConstraintViolation;
+use Symfony\Component\Validator\Exception\ValidationFailedException as SymfonyValidatorValidationFailedException;
 
 final class ErrorHandlerMiddleware implements EventSubscriberInterface
 {
+    private const SYMFONY_VALIDATION_PARAMETERS_TYPE_KEY = '{{ type }}';
+    private const SYMFONY_VALIDATION_PARAMETERS_HINT_KEY = 'hint';
+    private const SYMFONY_VALIDATION_UNKNOWN_TYPE = 'unknown';
+
     public static function getSubscribedEvents(): array
     {
         return [
@@ -41,22 +47,6 @@ final class ErrorHandlerMiddleware implements EventSubscriberInterface
                         $exception->getViolations()->getIterator()->getArrayCopy()
                     ),
                 ], Response::HTTP_BAD_REQUEST),
-            );
-
-            return;
-        }
-
-        if ($exception instanceof LazyAssertionException) {
-            $event->setResponse(
-                new JsonResponse([
-                    'errors' => array_map(
-                        static fn (InvalidArgumentException $violation) => [
-                            'propertyPath' => $violation->getPropertyPath(),
-                            'message' => $violation->getMessage(),
-                        ],
-                        $exception->getErrorExceptions()
-                    )
-                ], Response::HTTP_BAD_REQUEST)
             );
 
             return;
@@ -92,6 +82,44 @@ final class ErrorHandlerMiddleware implements EventSubscriberInterface
             return;
         }
 
+        if (
+            $exception instanceof HttpException
+            && $exception->getPrevious() instanceof SymfonyValidatorValidationFailedException
+        ) {
+            /** @var SymfonyValidatorValidationFailedException $previous */
+            $previous = $exception->getPrevious();
+            $errors = [];
 
+            foreach ($previous->getViolations() as $violation) {
+                $parameters = $violation->getParameters();
+
+                if (
+                    isset($parameters[self::SYMFONY_VALIDATION_PARAMETERS_TYPE_KEY], $parameters[self::SYMFONY_VALIDATION_PARAMETERS_HINT_KEY])
+                    && $parameters[self::SYMFONY_VALIDATION_PARAMETERS_TYPE_KEY]=== self::SYMFONY_VALIDATION_UNKNOWN_TYPE
+                ) {
+                    $errors = [
+                        [
+                            'propertyPath' => null,
+                            'message' => $violation->getParameters()[self::SYMFONY_VALIDATION_PARAMETERS_HINT_KEY],
+                        ],
+                    ];
+
+                    break;
+                }
+
+                $errors[] = [
+                    'propertyPath' => $violation->getPropertyPath(),
+                    'message' => $violation->getMessage(),
+                ];
+            }
+
+            $event->setResponse(
+                new JsonResponse([
+                    'errors' => $errors,
+                ], Response::HTTP_BAD_REQUEST),
+            );
+
+            return;
+        }
     }
 }

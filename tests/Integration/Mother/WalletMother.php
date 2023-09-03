@@ -48,4 +48,13 @@ final class WalletMother
             $this->delete($wallet['id']);
         }
     }
+
+    public function getById(string $id): array
+    {
+        $this->client->restart();
+
+        $this->client->request(Request::METHOD_GET, sprintf('%s/%s', self::URL_PATTERN, $id));
+
+        return json_decode($this->client->getResponse()->getContent(), true, 512, JSON_THROW_ON_ERROR);
+    }
 }

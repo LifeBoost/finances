@@ -7,7 +7,7 @@ namespace App\Application\Category\Update;
 final class UpdateCategoryCommand
 {
     public function __construct(
-        public readonly string $id,
+        public string $id,
         public readonly string $name,
         public readonly string $type,
         public readonly string $icon,
