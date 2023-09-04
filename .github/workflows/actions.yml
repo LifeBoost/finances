@@ -1,14 +1,58 @@
-name: Tests
+name: Main actions
 on: [push]
 jobs:
-  tests:
+  build:
+    name: Build
     runs-on: self-hosted
     container:
-      image: feejkr/lb-finances:v1.0.0
-      ports:
-        - 80
+      image: feejkr/lb-finances:latest
       volumes:
-        - .:/app
+        - ./:/app
     steps:
-      - name: Check phpstan
-        run: composer phpstan
+      - uses: actions/checkout@v3
+      - name: Build project
+        run: |
+          composer install
+          mkdir -p /tmp/artifact/$GITHUB_SHA
+          cp . /tmp/artifacts/$GITHUB_SHA
+      - name: Save artifact
+        uses: actions/upload-artifact/@v2
+        with:
+          name: project-artifact
+          path: /tmp/artifacts/$GITHUB_SHA
+  phpstan:
+    name: PHPStan
+    runs-on: self-hosted
+    needs: build
+    container:
+      image: feejkr/lb-finances:latest
+      volumes:
+        - ./:/app
+    steps:
+      - name: Download artifact
+        uses: actions/download-artifact@v2
+        with:
+          name: project-artifact
+          path: /tmp/artifacts/$GITHUB_SHA
+      - name: Run phpstan
+        run: |
+          cd /tmp/artifacts/$GITHUB_SHA
+          composer phpstan:check
+  csfixer:
+    name: CSFixer
+    runs-on: self-hosted
+    needs: build
+    container:
+      image: feejkr/lb-finances:latest
+      volumes:
+        - ./:/app
+    steps:
+      - name: Download artifact
+        uses: actions/download-artifact@v2
+        with:
+          name: project-artifact
+          path: /tmp/artifacts/$GITHUB_SHA
+      - name: Run csfixer
+        run: |
+          cd /tmp/artifacts/$GITHUB_SHA
+          composer cs:check
