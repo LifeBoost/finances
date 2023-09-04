@@ -110,6 +110,8 @@ COPY .docker/php/prod-* $PHP_INI_DIR/conf.d/
 COPY .docker/entrypoint/*-prod /usr/local/bin/
 RUN chmod +x /usr/local/bin/*-prod && pecl uninstall xdebug
 
+USER www-data
+
 COPY --chown=www-data:www-data --from=vendor /app/vendor/ /app/vendor/
 COPY --chown=www-data:www-data $APP_BASE_DIR/ .
 
@@ -138,6 +140,8 @@ COPY .docker/php/dev-* $PHP_INI_DIR/conf.d/
 COPY .docker/entrypoint/*-dev /usr/local/bin/
 RUN chmod +x /usr/local/bin/*-dev; \
     mv "$PHP_INI_DIR/php.ini-development" "$PHP_INI_DIR/php.ini"
+
+USER www-data
 
 ENTRYPOINT ["entrypoint-dev"]
 CMD ["php-fpm"]
