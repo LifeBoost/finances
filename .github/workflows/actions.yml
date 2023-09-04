@@ -18,8 +18,7 @@ jobs:
       - name: Build project
         run: |
           composer install
-          tar czf $artifactName /app
-          mv $artifactName /tmp/artifacts
+          tar czf /tmp/artifacts/$artifactName /app
       - name: Save artifact
         uses: actions/upload-artifact@v2
         with:
