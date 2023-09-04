@@ -8,7 +8,7 @@ jobs:
       ports:
         - 80
       volumes:
-        - ../../:/app
+        - finances_volume:/app
     steps:
       - name: Check phpstan
         run: composer phpstan
