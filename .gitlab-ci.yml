@@ -9,6 +9,7 @@ build:
   script:
     - cp .env .env.local
     - composer install
+    - composer cs:check
 
 tests:
   stage: test
