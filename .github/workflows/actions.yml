@@ -1,0 +1,14 @@
+name: Tests
+on: [push]
+jobs:
+  tests:
+    runs-on: self-hosted
+    container:
+      image: feejkr/lb-finances:v1.0.0
+      ports:
+        - 80
+      volumes:
+        - .:/app
+    steps:
+      - name: Check phpstan
+        run: composer phpstan
