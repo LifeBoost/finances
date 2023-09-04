@@ -14,7 +14,7 @@ jobs:
         run: |
           composer install
           mkdir -p /tmp/artifact/$GITHUB_SHA
-          cp . /tmp/artifacts/$GITHUB_SHA
+          cp -r * /tmp/artifacts/$GITHUB_SHA
       - name: Save artifact
         uses: actions/upload-artifact/@v2
         with:
