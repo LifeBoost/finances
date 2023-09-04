@@ -1,14 +1,66 @@
-name: Tests
+name: Main actions
+
 on: [push]
+
+env:
+  artifactName: ${{ github.sha }}.tar.gz
+
 jobs:
-  tests:
+  build:
+    name: Build
     runs-on: self-hosted
     container:
-      image: feejkr/lb-finances:v1.0.0
-      ports:
-        - 80
+      image: feejkr/lb-finances:latest
       volumes:
-        - .:/app
+        - ./:/app
     steps:
-      - name: Check phpstan
-        run: composer phpstan
+      - uses: actions/checkout@v3
+      - name: Build project
+        run: |
+          composer install
+          mkdir -p /tmp/artifacts
+          tar czf /tmp/artifacts/$artifactName /app
+      - name: Save artifact
+        uses: actions/upload-artifact@v2
+        with:
+          name: project-artifact
+          path: /tmp/artifacts
+          retention-days: 1
+  phpstan:
+    name: PHPStan
+    runs-on: self-hosted
+    needs: build
+    container:
+      image: feejkr/lb-finances:latest
+      volumes:
+        - ./:/app
+    steps:
+      - name: Download artifact
+        uses: actions/download-artifact@v2
+        with:
+          name: project-artifact
+          path: /tmp/artifacts
+      - name: Unpack artifact
+        run: |
+          tar -xf /tmp/artifacts/$artifactName -C /app
+      - name: Run phpstan
+        run: composer phpstan:check
+  csfixer:
+    name: CSFixer
+    runs-on: self-hosted
+    needs: build
+    container:
+      image: feejkr/lb-finances:latest
+      volumes:
+        - ./:/app
+    steps:
+      - name: Download artifact
+        uses: actions/download-artifact@v2
+        with:
+          name: project-artifact
+          path: /tmp/artifacts
+      - name: Unpack artifact
+        run: |
+          tar -xf /tmp/artifacts/$artifactName -C /app
+      - name: Run csfixer
+        run: composer cs:check
