@@ -8,7 +8,10 @@ jobs:
       volumes:
         - ./:/app
     steps:
+      - run: ls -l 
+      - run: ls -l /app
+      - run: ls -l /
       - name: Check phpstan
-        run: /app/vendor/bin/phpstan -cphpstan.neon --ansi analyse
+        run: /vendor/bin/phpstan -cphpstan.neon --ansi analyse
       - name: Check codestyle
         run: composer cs:check
