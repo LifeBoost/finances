@@ -19,13 +19,13 @@ final class Version20230203212718 extends AbstractMigration
         $this->addSql('
             CREATE TABLE `wallets`
             (
-                `id`            varchar(36)             not null,
-                `user_id`       varchar(36)             not null,
-                `name`          varchar(255)           not null,
-                `start_balance` int                    not null,
-                `currency`      varchar(3)             not null,
-                `created_at`    datetime default NOW() not null,
-                `updated_at`    datetime               null,
+                `id` varchar(36) COLLATE utf8mb4_unicode_ci not null,
+                `user_id` varchar(36) not null,
+                `name` varchar(255) not null,
+                `start_balance` int not null,
+                `currency` varchar(3) not null,
+                `created_at` datetime default NOW() not null,
+                `updated_at` datetime null,
                 constraint wallets_pk primary key (`id`),
                 constraint wallets_user_id_name_unique unique (`user_id`, `name`)
             );
