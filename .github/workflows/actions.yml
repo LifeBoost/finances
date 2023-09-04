@@ -9,8 +9,8 @@ jobs:
         - ./:/app
     steps:
       - uses: actions/checkout@v2
-      - run: ls -l /app
-      - run: ls -l
+      - name: Install project
+        run: composer install
       - name: Check phpstan
         run: composer phpstan:check
       - name: Check codestyle
