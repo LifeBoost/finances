@@ -8,8 +8,8 @@ jobs:
       volumes:
         - ./:/app
     steps:
-      - run: ls -l 
-      - run: ls -l /app
+      - run: ls -l /github/workspace
+      - run: ls -l /github
       - name: Check phpstan
         run: composer phpstan:check
       - name: Check codestyle
