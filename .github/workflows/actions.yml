@@ -3,7 +3,7 @@ name: Main actions
 on: [push]
 
 env:
-  artifactName: ${{ vars.GITHUB_SHA }}.tar.gz
+  artifactName: ${{ github.sha }}.tar.gz
 
 jobs:
   build:
