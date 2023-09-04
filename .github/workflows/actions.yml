@@ -10,8 +10,7 @@ jobs:
     steps:
       - run: ls -l 
       - run: ls -l /app
-      - run: ls -l /
       - name: Check phpstan
-        run: /vendor/bin/phpstan -cphpstan.neon --ansi analyse
+        run: composer phpstan:check
       - name: Check codestyle
         run: composer cs:check
