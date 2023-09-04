@@ -24,7 +24,7 @@ jobs:
         uses: actions/upload-artifact@v2
         with:
           name: project-artifact
-          path: /tmp/artifacts/${{ env.artifactName }}
+          path: /tmp/artifacts
           retention-days: 1
   phpstan:
     name: PHPStan
@@ -39,7 +39,7 @@ jobs:
         uses: actions/download-artifact@v2
         with:
           name: project-artifact
-          path: /tmp/artifacts/${{ env.artifactName }}
+          path: /tmp/artifacts
       - name: Unpack artifact
         run: |
           tar -xf /tmp/artifacts/$artifactName -C /app
@@ -58,7 +58,7 @@ jobs:
         uses: actions/download-artifact@v2
         with:
           name: project-artifact
-          path: /tmp/artifacts/${{ env.artifactName }}
+          path: /tmp/artifacts
       - name: Unpack artifact
         run: |
           tar -xf /tmp/artifacts/$artifactName -C /app
