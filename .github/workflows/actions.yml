@@ -9,6 +9,6 @@ jobs:
         - ./:/app
     steps:
       - name: Check phpstan
-        run: ./vendor/bin/phpstan -cphpstan.neon --ansi analyse
+        run: /app/vendor/bin/phpstan -cphpstan.neon --ansi analyse
       - name: Check codestyle
         run: composer cs:check
