@@ -4,7 +4,7 @@ jobs:
   tests:
     runs-on: self-hosted
     container:
-      image: feejkr/lb-finances:v1.0.0
+      image: feejkr/lb-finances:latest
       volumes:
         - .:/app
     steps:
