@@ -9,4 +9,6 @@ jobs:
         - .:/app
     steps:
       - name: Check phpstan
-        run: ls -la
+        run: composer phpstan:check
+      - name: Check codestyle
+        run: composer cs:check
