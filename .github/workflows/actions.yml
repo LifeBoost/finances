@@ -42,7 +42,7 @@ jobs:
           path: /tmp/artifacts/${{ env.artifactName }}
       - name: Unpack artifact
         run: |
-          tar -xf $artifactName -C /app
+          tar -xf /tmp/artifacts/$artifactName -C /app
       - name: Run phpstan
         run: composer phpstan:check
   csfixer:
@@ -61,6 +61,6 @@ jobs:
           path: /tmp/artifacts/${{ env.artifactName }}
       - name: Unpack artifact
         run: |
-          tar -xf $artifactName -C /app
+          tar -xf /tmp/artifacts/$artifactName -C /app
       - name: Run csfixer
         run: composer cs:check
