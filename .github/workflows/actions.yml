@@ -5,6 +5,8 @@ jobs:
     runs-on: self-hosted
     container:
       image: feejkr/lb-finances:latest
+      volumes:
+        - ./:/app
     steps:
       - uses: actions/checkout@v2
       - run: ls -l /github
