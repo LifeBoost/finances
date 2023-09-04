@@ -11,15 +11,12 @@ jobs:
     steps:
       - uses: actions/checkout@v3
       - name: Build project
-        run: |
-          composer install
-          mkdir -p /tmp/artifact/$GITHUB_SHA
-          cp . /tmp/artifacts/$GITHUB_SHA
+        run: composer install
       - name: Save artifact
-        uses: actions/upload-artifact/@v2
+        uses: actions/upload-artifact@v2
         with:
           name: project-artifact
-          path: /tmp/artifacts/$GITHUB_SHA
+          path: /app
   phpstan:
     name: PHPStan
     runs-on: self-hosted
@@ -33,11 +30,9 @@ jobs:
         uses: actions/download-artifact@v2
         with:
           name: project-artifact
-          path: /tmp/artifacts/$GITHUB_SHA
+          path: /app
       - name: Run phpstan
-        run: |
-          cd /tmp/artifacts/$GITHUB_SHA
-          composer phpstan:check
+        run: composer phpstan:check
   csfixer:
     name: CSFixer
     runs-on: self-hosted
@@ -51,8 +46,6 @@ jobs:
         uses: actions/download-artifact@v2
         with:
           name: project-artifact
-          path: /tmp/artifacts/$GITHUB_SHA
+          path: /app
       - name: Run csfixer
-        run: |
-          cd /tmp/artifacts/$GITHUB_SHA
-          composer cs:check
+        run: composer cs:check
