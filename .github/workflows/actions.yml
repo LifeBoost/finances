@@ -10,5 +10,7 @@ jobs:
       volumes:
         - .:/app
     steps:
+      - name: Install
+        run: composer install
       - name: Check phpstan
         run: composer phpstan
