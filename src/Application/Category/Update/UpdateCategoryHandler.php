@@ -10,10 +10,12 @@ use App\Domain\Category\CategoryType;
 use App\SharedKernel\Exception\DomainException;
 use App\SharedKernel\Exception\NotFoundException;
 use App\SharedKernel\Messenger\CommandHandlerInterface;
+use Symfony\Component\Messenger\Attribute\AsMessageHandler;
 
-final class UpdateCategoryHandler implements CommandHandlerInterface
+#[AsMessageHandler]
+final readonly class UpdateCategoryHandler implements CommandHandlerInterface
 {
-    public function __construct(private readonly CategoryRepository $repository)
+    public function __construct(private CategoryRepository $repository)
     {
     }
 
@@ -24,6 +26,22 @@ final class UpdateCategoryHandler implements CommandHandlerInterface
     public function __invoke(UpdateCategoryCommand $command): void
     {
         $category = $this->repository->getById(CategoryId::fromString($command->id));
+
+        if (
+            $category->getName() === $command->name
+            && $category->getType()->value === $command->type
+            && $category->getIcon() !== $command->icon
+        ) {
+            $category->update(
+                CategoryType::from($command->type),
+                $command->name,
+                $command->icon,
+            );
+
+            $this->repository->save($category);
+
+            return;
+        }
 
         $category->update(
             CategoryType::from($command->type),
