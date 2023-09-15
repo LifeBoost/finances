@@ -26,6 +26,8 @@ RUN apk add --no-cache --virtual .build-deps \
         icu-dev \
         linux-headers \
     && docker-php-ext-install -j$(nproc) \
+        bcmath \
+        sockets \
         intl \
         opcache \
         pdo_mysql \
@@ -44,6 +46,13 @@ RUN apk add --no-cache --virtual .build-deps \
         apk add --no-network --virtual .php-extensions-rundeps $runDeps; \
         apk del --no-network .build-deps; \
         err="$(php --version 3>&1 1>&2 2>&3)"; 	[ -z "$err" ]
+
+## Install AMQP
+RUN set -eux; \
+  apk add rabbitmq-c-dev; \
+  pecl install amqp-1.11.0; \
+  docker-php-ext-enable amqp; \
+  php -m | grep -oiE '^amqp$'
 
 RUN apk add --no-cache --virtual .build-xdebug linux-headers && pecl install xdebug-${XDEBUG_VERSION}
 
@@ -94,7 +103,7 @@ WORKDIR /app
 
 COPY $APP_BASE_DIR/composer.json composer.json
 COPY $APP_BASE_DIR/composer.lock composer.lock
-#
+
 RUN composer config platform.php ${PHP_VERSION}; \
     composer install -n --no-progress --ignore-platform-reqs --no-dev --prefer-dist --no-scripts --no-autoloader
 

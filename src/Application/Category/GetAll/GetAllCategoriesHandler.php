@@ -8,12 +8,14 @@ use App\Domain\User\UserContext;
 use App\SharedKernel\Messenger\QueryHandlerInterface;
 use Doctrine\DBAL\Connection;
 use Doctrine\DBAL\Exception;
+use Symfony\Component\Messenger\Attribute\AsMessageHandler;
 
-final class GetAllCategoriesHandler implements QueryHandlerInterface
+#[AsMessageHandler]
+final readonly class GetAllCategoriesHandler implements QueryHandlerInterface
 {
     public function __construct(
-        private readonly UserContext $userContext,
-        private readonly Connection $connection,
+        private UserContext $userContext,
+        private Connection  $connection,
     ) {
     }
 

@@ -16,6 +16,7 @@ use Symfony\Component\HttpFoundation\Response;
 
 abstract class BaseTestCase extends WebTestCase
 {
+    protected const SECOND_TEST_JWT_TOKEN = 'eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJ1c2VySWQiOiJiZmFjOThmYi0wYWNhLTQ1NmEtYjIyOC01NTQ3OWY4YWY1MWMiLCJleHAiOjQ1MTAwNjgzNDA4fQ.wMNVjrikpW_Cyu1yb6k7_00rQUNvk3uRpXjp88Ok3EA';
     protected const TEST_JWT_TOKEN = 'eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJ1c2VySWQiOiJmMWU0ZjQxZC04ODU1LTRmNjYtYmJlOS03ZGY1ZGNkYjU5NWYifQ.qgG1z3jI3lHtLmXvKVUDB_CcOHrzhsvuF-5xyuBVwOY';
 
     protected WalletMother $walletMother;
@@ -38,18 +39,20 @@ abstract class BaseTestCase extends WebTestCase
         parent::tearDown();
     }
 
-    protected static function getHeaders(): array
-    {
+    protected static function getHeaders(
+        string $bearerToken = self::TEST_JWT_TOKEN
+    ): array {
         return [
-            'HTTP_AUTHORIZATION' => sprintf('Bearer %s', self::TEST_JWT_TOKEN),
+            'HTTP_AUTHORIZATION' => sprintf('Bearer %s', $bearerToken),
         ];
     }
 
-    protected static function createHttpClient(): KernelBrowser
-    {
+    protected static function createHttpClient(
+        string $bearerToken = self::TEST_JWT_TOKEN
+    ): KernelBrowser {
         self::ensureKernelShutdown();
 
-        return self::createClient([], self::getHeaders());
+        return self::createClient([], self::getHeaders($bearerToken));
     }
 
     public function get(string $url, array $query = []): Response
@@ -89,7 +92,7 @@ abstract class BaseTestCase extends WebTestCase
         return json_decode($content, true, 512, JSON_THROW_ON_ERROR);
     }
 
-    protected static function runCommand($command): int
+    protected static function runCommand(string $command): int
     {
         $command = sprintf('%s --quiet', $command);
 

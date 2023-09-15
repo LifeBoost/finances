@@ -4,12 +4,12 @@ declare(strict_types=1);
 
 namespace App\Application\Category\Create;
 
-final class CreateCategoryCommand
+final readonly class CreateCategoryCommand
 {
     public function __construct(
-        public readonly string $type,
-        public readonly string $name,
-        public readonly string $icon,
+        public string $type,
+        public string $name,
+        public string $icon,
     ) {
     }
 }
