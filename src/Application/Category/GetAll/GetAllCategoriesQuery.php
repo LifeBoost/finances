@@ -4,10 +4,10 @@ declare(strict_types=1);
 
 namespace App\Application\Category\GetAll;
 
-final class GetAllCategoriesQuery
+final readonly class GetAllCategoriesQuery
 {
     public function __construct(
-        public readonly ?string $filterType,
+        public ?string $filterType = null,
     ) {
     }
 }

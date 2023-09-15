@@ -12,6 +12,7 @@ use App\Application\Category\GetOneById\CategoryDTO;
 use App\Application\Category\GetOneById\GetOneCategoryByIdQuery;
 use App\Application\Category\Update\UpdateCategoryCommand;
 use App\Domain\Category\CategoryId;
+use App\UI\API\Request\Category\CreateCategoryRequest;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Response;
@@ -30,10 +31,19 @@ final class CategoryController extends AbstractController
     }
 
     #[Route('', name: 'create', methods: ['POST'])]
-    public function create(#[MapRequestPayload] CreateCategoryCommand $command): Response
+    public function create(#[MapRequestPayload] CreateCategoryRequest $request): Response
     {
         /** @var CategoryId $id */
-        $id = $this->bus->dispatch($command)->last(HandledStamp::class)?->getResult();
+        $id = $this->bus
+            ->dispatch(
+                new CreateCategoryCommand(
+                    $request->type,
+                    $request->name,
+                    $request->icon,
+                )
+            )
+            ->last(HandledStamp::class)
+            ?->getResult();
 
         return new JsonResponse([
             'id' => $id->toString(),
@@ -51,11 +61,16 @@ final class CategoryController extends AbstractController
     }
 
     #[Route('/{id}', name: 'update', methods: ['POST'])]
-    public function update(string $id, #[MapRequestPayload] UpdateCategoryCommand $command): Response
+    public function update(string $id, #[MapRequestPayload] CreateCategoryRequest $request): Response
     {
-        $command->id = $id;
-
-        $this->bus->dispatch($command);
+        $this->bus->dispatch(
+            new UpdateCategoryCommand(
+                $id,
+                $request->type,
+                $request->name,
+                $request->icon,
+            )
+        );
 
         return new JsonResponse(status: Response::HTTP_NO_CONTENT);
     }
@@ -77,7 +92,7 @@ final class CategoryController extends AbstractController
     }
 
     #[Route('', name: 'list', methods: ['GET'])]
-    public function list(#[MapQueryString] GetAllCategoriesQuery $query): Response
+    public function list(#[MapQueryString] GetAllCategoriesQuery $query = new GetAllCategoriesQuery()): Response
     {
         /** @var CategoriesCollection $collection */
         $collection = $this->bus->dispatch($query)->last(HandledStamp::class)?->getResult();
