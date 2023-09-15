@@ -9,14 +9,13 @@ namespace App\Tests\Integration\Category;
 use App\Domain\Category\CategoryType;
 use App\Tests\Integration\BaseTestCase;
 use App\Tests\Integration\Mother\CategoryMother;
+use PHPUnit\Framework\Attributes\Test;
 use Ramsey\Uuid\Uuid;
 use Symfony\Component\HttpFoundation\Response;
 
 final class GetOneByIdCategoryTest extends BaseTestCase
 {
-    /**
-     * @test
-     */
+    #[Test]
     public function tryGetCategoryOneByIdWithoutError(): void
     {
         $type = CategoryType::INCOME->value;
@@ -37,9 +36,7 @@ final class GetOneByIdCategoryTest extends BaseTestCase
         self::assertEquals($icon, $responseData['icon']);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function tryGetCategoryByIdWithNotFoundId(): void
     {
         $response = $this->get(sprintf('%s/%s', CategoryMother::getUrlPattern(), Uuid::uuid4()->toString()));
@@ -47,9 +44,7 @@ final class GetOneByIdCategoryTest extends BaseTestCase
         self::assertEquals(Response::HTTP_NOT_FOUND, $response->getStatusCode());
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function tryGetCategoryByIdWithCategoryOnAnotherUser(): void
     {
         $category = (new CategoryMother(self::createHttpClient(self::SECOND_TEST_JWT_TOKEN)))->create(CategoryMother::prepareJsonData());

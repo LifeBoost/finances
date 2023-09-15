@@ -8,14 +8,13 @@ namespace App\Tests\Integration\Wallet;
 
 use App\Tests\Integration\BaseTestCase;
 use App\Tests\Integration\Mother\WalletMother;
+use PHPUnit\Framework\Attributes\Test;
 use Ramsey\Uuid\Uuid;
 use Symfony\Component\HttpFoundation\Response;
 
 final class GetOneByIdWalletTest extends BaseTestCase
 {
-    /**
-     * @test
-     */
+    #[Test]
     public function getOneByIdWithCorrectData(): void
     {
         $name = 'Wallet 1';
@@ -36,9 +35,7 @@ final class GetOneByIdWalletTest extends BaseTestCase
         self::assertEquals($currency, $responseData['currency']);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function tryGetOneByIdFromAnotherUser(): void
     {
         $secondWalletMother = new WalletMother(self::createHttpClient(self::SECOND_TEST_JWT_TOKEN));
@@ -50,9 +47,7 @@ final class GetOneByIdWalletTest extends BaseTestCase
         self::assertEquals(Response::HTTP_NOT_FOUND, $response->getStatusCode());
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function tryGetOneByIdWithNotFoundId(): void
     {
         $response = $this->get(sprintf('%s/%s', WalletMother::URL_PATTERN, Uuid::uuid4()->toString()));

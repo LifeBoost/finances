@@ -8,14 +8,13 @@ namespace App\Tests\Integration\Category;
 
 use App\Tests\Integration\BaseTestCase;
 use App\Tests\Integration\Mother\CategoryMother;
+use PHPUnit\Framework\Attributes\Test;
 use Ramsey\Uuid\Uuid;
 use Symfony\Component\HttpFoundation\Response;
 
 final class DeleteCategoryTest extends BaseTestCase
 {
-    /**
-     * @test
-     */
+    #[Test]
     public function tryDeleteCategoryWithoutError(): void
     {
         $category = $this->categoryMother->create(CategoryMother::prepareJsonData());
@@ -27,9 +26,7 @@ final class DeleteCategoryTest extends BaseTestCase
         self::assertEquals(Response::HTTP_NO_CONTENT, $response->getStatusCode());
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function tryDeleteNotFoundCategory(): void
     {
         $response = $this->delete(sprintf('%s/%s', CategoryMother::getUrlPattern(), Uuid::uuid4()->toString()));
@@ -37,9 +34,7 @@ final class DeleteCategoryTest extends BaseTestCase
         self::assertEquals(Response::HTTP_NOT_FOUND, $response->getStatusCode());
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function tryDeleteAnotherUsersCategory(): void
     {
         $secondCategoryMother = new CategoryMother(self::createHttpClient(self::SECOND_TEST_JWT_TOKEN));

@@ -8,13 +8,12 @@ namespace App\Tests\Integration\Wallet;
 
 use App\Tests\Integration\BaseTestCase;
 use App\Tests\Integration\Mother\WalletMother;
+use PHPUnit\Framework\Attributes\Test;
 use Symfony\Component\HttpFoundation\Response;
 
 final class UpdateWalletTest extends BaseTestCase
 {
-    /**
-     * @test
-     */
+    #[Test]
     public function updateWithoutAnyError(): void
     {
         $wallet = $this->walletMother->create('Wallet 1', 120, 'PLN');
@@ -37,9 +36,7 @@ final class UpdateWalletTest extends BaseTestCase
         self::assertEquals($newCurrency, $updated['currency']);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function updateWithErrorOnLongName(): void
     {
         $wallet = $this->walletMother->create('Wallet 1', 120, 'PLN');
@@ -61,9 +58,7 @@ final class UpdateWalletTest extends BaseTestCase
         self::assertEquals('This value is too long. It should have 255 characters or less.', $responseData['errors'][0]['message']);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function updateWithErrorOnInvalidStartBalance(): void
     {
         $wallet = $this->walletMother->create('Wallet 1', 120, 'PLN');
@@ -85,9 +80,7 @@ final class UpdateWalletTest extends BaseTestCase
         self::assertEquals('This value should be greater than 0.', $responseData['errors'][0]['message']);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function updateWithErrorOnInvalidCurrency(): void
     {
         $wallet = $this->walletMother->create('Wallet 1', 120, 'PLN');

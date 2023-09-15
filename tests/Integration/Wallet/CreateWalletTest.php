@@ -8,14 +8,13 @@ namespace App\Tests\Integration\Wallet;
 
 use App\Tests\Integration\BaseTestCase;
 use App\Tests\Integration\Mother\WalletMother;
+use PHPUnit\Framework\Attributes\Test;
 use Ramsey\Uuid\Uuid;
 use Symfony\Component\HttpFoundation\Response;
 
 final class CreateWalletTest extends BaseTestCase
 {
-    /**
-     * @test
-     */
+    #[Test]
     public function createWalletWithDuplicatedName(): void
     {
         $this->walletMother->create('Unique Wallet');
@@ -33,9 +32,7 @@ final class CreateWalletTest extends BaseTestCase
         self::assertEquals('Wallet with given name already exists', $responseData['errors'][0]['message']);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function createWalletWithoutStartBalance(): void
     {
         $response = $this->post(WalletMother::URL_PATTERN, [
@@ -51,9 +48,7 @@ final class CreateWalletTest extends BaseTestCase
         self::assertEquals('Failed to create object because the class misses the "startBalance" property.', $responseData['errors'][0]['message']);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function createWalletWithoutName(): void
     {
         $response = $this->post(WalletMother::URL_PATTERN, [
@@ -69,9 +64,7 @@ final class CreateWalletTest extends BaseTestCase
         self::assertEquals('Failed to create object because the class misses the "name" property.', $responseData['errors'][0]['message']);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function createWalletWithoutCurrency(): void
     {
         $response = $this->post(WalletMother::URL_PATTERN, [
@@ -87,9 +80,7 @@ final class CreateWalletTest extends BaseTestCase
         self::assertEquals('Failed to create object because the class misses the "currency" property.', $responseData['errors'][0]['message']);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function createWalletWithoutErrors(): void
     {
         $response = $this->post(WalletMother::URL_PATTERN, [
@@ -105,9 +96,7 @@ final class CreateWalletTest extends BaseTestCase
         self::assertTrue(Uuid::isValid($responseData['id']));
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function createWalletWithInvalidCurrency(): void
     {
         $response = $this->post(WalletMother::URL_PATTERN, [
@@ -124,9 +113,7 @@ final class CreateWalletTest extends BaseTestCase
         self::assertEquals('The value you selected is not a valid choice.', $responseData['errors'][0]['message']);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function createWalletWithInvalidName(): void
     {
         $response = $this->post(WalletMother::URL_PATTERN, [
@@ -143,9 +130,7 @@ final class CreateWalletTest extends BaseTestCase
         self::assertEquals('This value is too long. It should have 255 characters or less.', $responseData['errors'][0]['message']);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function createWalletWithInvalidStartBalance(): void
     {
         $response = $this->post(WalletMother::URL_PATTERN, [

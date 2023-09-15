@@ -8,14 +8,13 @@ namespace App\Tests\Integration\Wallet;
 
 use App\Tests\Integration\BaseTestCase;
 use App\Tests\Integration\Mother\WalletMother;
+use PHPUnit\Framework\Attributes\Test;
 use Ramsey\Uuid\Uuid;
 use Symfony\Component\HttpFoundation\Response;
 
 final class DeleteWalletTest extends BaseTestCase
 {
-    /**
-     * @test
-     */
+    #[Test]
     public function tryDeleteCorrectWallet(): void
     {
         $wallet = $this->walletMother->create();
@@ -25,9 +24,7 @@ final class DeleteWalletTest extends BaseTestCase
         self::assertEquals(Response::HTTP_NO_CONTENT, $response->getStatusCode());
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function tryDeleteAnotherUserWallet(): void
     {
         $secondWalletMother = new WalletMother(self::createHttpClient(self::SECOND_TEST_JWT_TOKEN));
@@ -43,9 +40,7 @@ final class DeleteWalletTest extends BaseTestCase
         self::assertEquals($wallet['id'], $fetchedWallet['id']);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function tryDeleteNotFoundWallet(): void
     {
         $response = $this->delete(sprintf('%s/%s', WalletMother::URL_PATTERN, Uuid::uuid4()->toString()));
