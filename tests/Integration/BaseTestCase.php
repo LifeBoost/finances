@@ -6,6 +6,7 @@ declare(strict_types=1);
 
 namespace App\Tests\Integration;
 
+use App\Tests\Integration\Mother\CategoryMother;
 use App\Tests\Integration\Mother\WalletMother;
 use Symfony\Bundle\FrameworkBundle\Console\Application;
 use Symfony\Bundle\FrameworkBundle\KernelBrowser;
@@ -20,6 +21,7 @@ abstract class BaseTestCase extends WebTestCase
     protected const TEST_JWT_TOKEN = 'eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJ1c2VySWQiOiJmMWU0ZjQxZC04ODU1LTRmNjYtYmJlOS03ZGY1ZGNkYjU5NWYifQ.qgG1z3jI3lHtLmXvKVUDB_CcOHrzhsvuF-5xyuBVwOY';
 
     protected WalletMother $walletMother;
+    protected CategoryMother $categoryMother;
 
     protected function setUp(): void
     {
@@ -30,6 +32,7 @@ abstract class BaseTestCase extends WebTestCase
         parent::setUp();
 
         $this->walletMother = new WalletMother(self::createHttpClient());
+        $this->categoryMother = new CategoryMother(self::createHttpClient());
     }
 
     protected function tearDown(): void

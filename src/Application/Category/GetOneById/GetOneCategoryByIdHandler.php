@@ -5,20 +5,24 @@ declare(strict_types=1);
 namespace App\Application\Category\GetOneById;
 
 use App\Domain\User\UserContext;
+use App\SharedKernel\Exception\NotFoundException;
 use App\SharedKernel\Messenger\QueryHandlerInterface;
 use Doctrine\DBAL\Connection;
 use Doctrine\DBAL\Exception;
+use Symfony\Component\Messenger\Attribute\AsMessageHandler;
 
-final class GetOneCategoryByIdHandler implements QueryHandlerInterface
+#[AsMessageHandler]
+final readonly class GetOneCategoryByIdHandler implements QueryHandlerInterface
 {
     public function __construct(
-        private readonly Connection $connection,
-        private readonly UserContext $userContext,
+        private Connection  $connection,
+        private UserContext $userContext,
     ) {
     }
 
     /**
      * @throws Exception
+     * @throws NotFoundException
      */
     public function __invoke(GetOneCategoryByIdQuery $query): CategoryDTO
     {
@@ -39,6 +43,10 @@ final class GetOneCategoryByIdHandler implements QueryHandlerInterface
             ])
             ->executeQuery()
             ->fetchAssociative();
+
+        if (empty($row)) {
+            throw new NotFoundException('Category with given ID not found');
+        }
 
         return new CategoryDTO(
             $row['id'],

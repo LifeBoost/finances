@@ -66,8 +66,8 @@ final class CategoryController extends AbstractController
         $this->bus->dispatch(
             new UpdateCategoryCommand(
                 $id,
-                $request->type,
                 $request->name,
+                $request->type,
                 $request->icon,
             )
         );
