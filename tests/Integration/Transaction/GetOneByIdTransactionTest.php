@@ -6,7 +6,6 @@ namespace App\Tests\Integration\Transaction;
 
 use App\Domain\Transaction\TransactionType;
 use App\Tests\Integration\BaseTestCase;
-use App\Tests\Integration\Mother\CategoryMother;
 use App\Tests\Integration\Mother\TransactionMother;
 use DateTimeImmutable;
 use PHPUnit\Framework\Attributes\Test;
@@ -42,11 +41,9 @@ final class GetOneByIdTransactionTest extends BaseTestCase
 
     public function tryGetTransactionFromAnotherUser(): void
     {
-
     }
 
     public function tryGetNotFoundTransaction(): void
     {
-
     }
 }

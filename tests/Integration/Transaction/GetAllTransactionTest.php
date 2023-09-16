@@ -25,26 +25,21 @@ final class GetAllTransactionTest extends BaseTestCase
 
     public function tryGetAllTransactionsListWithElements(): void
     {
-
     }
 
     public function tryGetAllTransactionsListFromAnotherUser(): void
     {
-
     }
 
     public function tryGetAllTransactionsWithDateFrom(): void
     {
-
     }
 
     public function tryGetAllTransactionsWithDateTo(): void
     {
-
     }
 
     public function tryGetAllTransactionsWithDateFromAndDateTo(): void
     {
-
     }
 }

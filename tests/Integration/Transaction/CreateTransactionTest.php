@@ -154,16 +154,13 @@ final class CreateTransactionTest extends BaseTestCase
 
     public function tryCreateTransactionWithSourceWalletFromAnotherUser(): void
     {
-
     }
 
     public function tryCreateTransactionWithTargetWalletFromAnotherUser(): void
     {
-
     }
 
     public function tryCreateTransactionWithCategoryFromAnotherUser(): void
     {
-
     }
 }

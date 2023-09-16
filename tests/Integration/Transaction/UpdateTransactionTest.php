@@ -58,36 +58,29 @@ final class UpdateTransactionTest extends BaseTestCase
 
     public function tryUpdateTransactionWithInvalidType(): void
     {
-
     }
 
     public function tryUpdateExpenseTransactionWithTargetWallet(): void
     {
-
     }
 
     public function tryUpdateTransferTransactionWithCategory(): void
     {
-
     }
 
     public function tryUpdateTransactionWithZeroAmount(): void
     {
-
     }
 
     public function tryUpdateTransactionWithSourceWalletFromAnotherUser(): void
     {
-
     }
 
     public function tryUpdateTransferTransactionWithTargetWalletFromAnotherUser(): void
     {
-
     }
 
     public function tryUpdateExpenseTransactionWithCategoryFromAnotherUser(): void
     {
-
     }
 }
