@@ -12,6 +12,7 @@ use App\Application\Transaction\GetAll\TransactionsCollection;
 use App\Application\Transaction\GetOneById\GetOneTransactionByIdQuery;
 use App\Application\Transaction\Update\UpdateTransactionCommand;
 use App\Domain\Transaction\TransactionId;
+use App\UI\API\Request\Transaction\CreateTransactionRequest;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Response;
@@ -30,10 +31,22 @@ final class TransactionController extends AbstractController
     }
 
     #[Route('', name: 'create', methods: ['POST'])]
-    public function create(#[MapRequestPayload] CreateTransactionCommand $command): Response
+    public function create(#[MapRequestPayload] CreateTransactionRequest $request): Response
     {
         /** @var TransactionId $id */
-        $id = $this->bus->dispatch($command)->last(HandledStamp::class)?->getResult();
+        $id = $this->bus
+            ->dispatch(
+                new CreateTransactionCommand(
+                    $request->type,
+                    $request->sourceWalletId,
+                    $request->targetWalletId,
+                    $request->categoryId,
+                    $request->date,
+                    $request->description,
+                    $request->amount,
+                )
+            )->last(HandledStamp::class)
+            ?->getResult();
 
         return new JsonResponse(['id' => $id->toString()], Response::HTTP_CREATED);
     }
@@ -49,17 +62,26 @@ final class TransactionController extends AbstractController
     }
 
     #[Route('/{id}', name: 'update', methods: ['POST'])]
-    public function update(string $id, #[MapRequestPayload] UpdateTransactionCommand $command): Response
+    public function update(string $id, #[MapRequestPayload] CreateTransactionRequest $request): Response
     {
-        $command->id = $id;
-
-        $this->bus->dispatch($command);
+        $this->bus->dispatch(
+            new UpdateTransactionCommand(
+                $id,
+                $request->type,
+                $request->sourceWalletId,
+                $request->targetWalletId,
+                $request->categoryId,
+                $request->date,
+                $request->description,
+                $request->amount,
+            )
+        );
 
         return new JsonResponse(status: Response::HTTP_NO_CONTENT);
     }
 
     #[Route('', name: 'list', methods: ['GET'])]
-    public function list(#[MapQueryString] GetAllTransactionsQuery $query): Response
+    public function list(#[MapQueryString] GetAllTransactionsQuery $query = new GetAllTransactionsQuery(null, null)): Response
     {
         /** @var TransactionsCollection $collection */
         $collection = $this->bus->dispatch($query)->last(HandledStamp::class)?->getResult();

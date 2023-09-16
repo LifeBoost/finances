@@ -2,16 +2,6 @@
 
 $ignoreErrors = [];
 $ignoreErrors[] = [
-	'message' => '#^Access to an undefined property App\\\\Domain\\\\Transaction\\\\Transaction\\:\\:\\$sourceWallet\\.$#',
-	'count' => 1,
-	'path' => __DIR__ . '/src/Domain/Transaction/Transaction.php',
-];
-$ignoreErrors[] = [
-	'message' => '#^Access to an undefined property App\\\\Domain\\\\Transaction\\\\Transaction\\:\\:\\$targetWallet\\.$#',
-	'count' => 1,
-	'path' => __DIR__ . '/src/Domain/Transaction/Transaction.php',
-];
-$ignoreErrors[] = [
 	'message' => '#^Unsafe usage of new static\\(\\)\\.$#',
 	'count' => 2,
 	'path' => __DIR__ . '/src/SharedKernel/Id.php',

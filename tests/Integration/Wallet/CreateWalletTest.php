@@ -144,6 +144,17 @@ final class CreateWalletTest extends BaseTestCase
         self::assertEquals(Response::HTTP_BAD_REQUEST, $response->getStatusCode());
         self::assertArrayHasKey('errors', $responseData);
         self::assertEquals('startBalance', $responseData['errors'][0]['propertyPath']);
-        self::assertEquals('This value should be greater than 0.', $responseData['errors'][0]['message']);
+        self::assertEquals('This value should be greater than or equal to 0.', $responseData['errors'][0]['message']);
+    }
+
+    public function tryCreateWalletWithZeroStartBalance(): void
+    {
+        $response = $this->post(WalletMother::URL_PATTERN, [
+            'name' => 'Wallet 1',
+            'startBalance' => 0,
+            'currency' => 'PLN',
+        ]);
+
+        self::assertEquals(Response::HTTP_CREATED, $response->getStatusCode());
     }
 }

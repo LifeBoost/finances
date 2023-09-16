@@ -14,7 +14,7 @@ final readonly class CreateWalletRequest
         #[Assert\Length(max: 255)]
         public string $name,
         #[Assert\NotBlank]
-        #[Assert\GreaterThan(0)]
+        #[Assert\GreaterThanOrEqual(0)]
         public int $startBalance,
         #[Assert\NotBlank]
         #[Assert\Choice([

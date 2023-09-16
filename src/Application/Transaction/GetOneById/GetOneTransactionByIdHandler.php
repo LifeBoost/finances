@@ -9,7 +9,9 @@ use App\SharedKernel\Exception\NotFoundException;
 use App\SharedKernel\Messenger\QueryHandlerInterface;
 use Doctrine\DBAL\Connection;
 use Doctrine\DBAL\Exception;
+use Symfony\Component\Messenger\Attribute\AsMessageHandler;
 
+#[AsMessageHandler]
 final class GetOneTransactionByIdHandler implements QueryHandlerInterface
 {
     public function __construct(
