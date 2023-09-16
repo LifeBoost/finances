@@ -4,15 +4,11 @@ declare(strict_types=1);
 
 namespace App\Infrastructure\Wallet;
 
-use App\Domain\Currency\Currency;
-use App\Domain\User\UserContext;
 use App\Domain\Wallet\Wallet;
 use App\Domain\Wallet\WalletId;
 use App\Domain\Wallet\WalletRepository;
 use App\SharedKernel\Exception\NotFoundException;
-use DateTime;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
-use Doctrine\DBAL\Connection;
 use Doctrine\DBAL\Exception;
 use Doctrine\Persistence\ManagerRegistry;
 use Ramsey\Uuid\UuidInterface;

@@ -11,7 +11,6 @@ use App\Domain\Wallet\WalletRepository;
 use App\SharedKernel\Exception\NotFoundException;
 use App\SharedKernel\Messenger\CommandHandlerInterface;
 use Ramsey\Uuid\Uuid;
-use Ramsey\Uuid\UuidInterface;
 
 final class UpdateWalletHandler implements CommandHandlerInterface
 {

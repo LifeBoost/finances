@@ -7,7 +7,6 @@ namespace App\Application\Transaction\Create;
 use App\Domain\Category\CategoryId;
 use App\Domain\Category\CategoryRepository;
 use App\Domain\Transaction\Transaction;
-use App\Domain\Transaction\TransactionId;
 use App\Domain\Transaction\TransactionRepository;
 use App\Domain\Transaction\TransactionType;
 use App\Domain\User\UserContext;

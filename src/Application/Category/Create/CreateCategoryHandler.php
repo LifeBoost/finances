@@ -5,7 +5,6 @@ declare(strict_types=1);
 namespace App\Application\Category\Create;
 
 use App\Domain\Category\Category;
-use App\Domain\Category\CategoryId;
 use App\Domain\Category\CategoryRepository;
 use App\Domain\Category\CategoryType;
 use App\Domain\User\UserContext;

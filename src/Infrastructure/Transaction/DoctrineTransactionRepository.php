@@ -4,19 +4,12 @@ declare(strict_types=1);
 
 namespace App\Infrastructure\Transaction;
 
-use App\Domain\Category\CategoryId;
 use App\Domain\Transaction\Transaction;
 use App\Domain\Transaction\TransactionId;
 use App\Domain\Transaction\TransactionRepository;
-use App\Domain\Transaction\TransactionType;
-use App\Domain\User\UserContext;
-use App\Domain\User\UserId;
-use App\Domain\Wallet\WalletId;
 use App\SharedKernel\Exception\DomainException;
 use App\SharedKernel\Exception\NotFoundException;
-use DateTimeImmutable;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
-use Doctrine\DBAL\Connection;
 use Doctrine\DBAL\Exception;
 use Doctrine\Persistence\ManagerRegistry;
 use Ramsey\Uuid\UuidInterface;
