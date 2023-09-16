@@ -4,27 +4,51 @@ declare(strict_types=1);
 
 namespace App\Domain\Transaction;
 
-use App\Domain\Category\CategoryId;
-use App\Domain\Wallet\WalletId;
+use App\Domain\Category\Category;
+use App\Domain\Wallet\Wallet;
+use App\SharedKernel\Entity;
 use App\SharedKernel\Exception\DomainException;
 use DateTimeImmutable;
+use Doctrine\ORM\Mapping as ORM;
+use Ramsey\Uuid\Uuid;
+use Ramsey\Uuid\UuidInterface;
 
-final class Transaction
+#[ORM\Entity(repositoryClass: TransactionRepository::class)]
+#[ORM\Table(name: 'transactions')]
+class Transaction extends Entity
 {
     /**
      * @throws DomainException
      */
     public function __construct(
-        private TransactionId $id,
-        private TransactionType $type,
-        private WalletId $sourceWalletId,
-        private ?WalletId $targetWalletId,
-        private ?CategoryId $categoryId,
+        #[ORM\Id]
+        #[ORM\Column(type: 'uuid', unique: true)]
+        private UuidInterface $id,
+        #[ORM\Column]
+        private string $type,
+        #[ORM\ManyToOne(targetEntity: Wallet::class)]
+        #[ORM\JoinColumn(name: 'source_wallet_id', referencedColumnName: 'id')]
+        private Wallet $sourceWallet,
+        #[ORM\ManyToOne(targetEntity: Wallet::class)]
+        #[ORM\JoinColumn(name: 'target_wallet_id', referencedColumnName: 'id')]
+        private ?Wallet $targetWallet,
+        #[ORM\ManyToOne(targetEntity: Category::class)]
+        #[ORM\JoinColumn(name: 'category_id', referencedColumnName: 'id')]
+        private ?Category $category,
+        #[ORM\Column(type: 'uuid')]
+        public readonly UuidInterface $userId,
+        #[ORM\Column(type: 'date_immutable')]
         private DateTimeImmutable $date,
+        #[ORM\Column(length: 255)]
         private string $description,
+        #[ORM\Column]
         private int $amount,
     ) {
-        $this->validateType($this->type, $this->targetWalletId, $this->categoryId);
+        $this->validateType(
+            TransactionType::from($this->type),
+            $this->targetWallet,
+            $this->category,
+        );
     }
 
     /**
@@ -32,19 +56,21 @@ final class Transaction
      */
     public static function create(
         TransactionType $type,
-        WalletId $sourceWalletId,
-        ?WalletId $targetWalletId,
-        ?CategoryId $categoryId,
+        Wallet $sourceWallet,
+        ?Wallet $targetWallet,
+        ?Category $category,
+        UuidInterface $userId,
         DateTimeImmutable $date,
         string $description,
         int $amount
     ): self {
         return new self(
-            TransactionId::generate(),
-            $type,
-            $sourceWalletId,
-            $targetWalletId,
-            $categoryId,
+            Uuid::uuid4(),
+            $type->value,
+            $sourceWallet,
+            $targetWallet,
+            $category,
+            $userId,
             $date,
             $description,
             $amount,
@@ -56,19 +82,19 @@ final class Transaction
      */
     public function update(
         TransactionType $type,
-        WalletId $sourceWalletId,
-        ?WalletId $targetWalletId,
-        ?CategoryId $categoryId,
+        Wallet $sourceWallet,
+        ?Wallet $targetWallet,
+        ?Category $category,
         DateTimeImmutable $date,
         string $description,
         int $amount
     ): void {
-        $this->validateType($type, $targetWalletId, $categoryId);
+        $this->validateType($type, $targetWallet, $category);
 
-        $this->type = $type;
-        $this->sourceWalletId = $sourceWalletId;
-        $this->targetWalletId = $targetWalletId;
-        $this->categoryId = $categoryId;
+        $this->type = $type->value;
+        $this->sourceWallet = $sourceWallet;
+        $this->targetWallet = $targetWallet;
+        $this->category = $category;
         $this->date = $date;
         $this->description = $description;
         $this->amount = $amount;
@@ -77,7 +103,7 @@ final class Transaction
     /**
      * @throws DomainException
      */
-    private function validateType(TransactionType $type, ?WalletId $targetWalletId, ?CategoryId $categoryId): void
+    private function validateType(TransactionType $type, ?Wallet $targetWalletId, ?Category $categoryId): void
     {
         if ($type === TransactionType::TRANSFER && $targetWalletId === null) {
             throw new DomainException('For transfer type target wallet must be provided');
@@ -88,29 +114,29 @@ final class Transaction
         }
     }
 
-    public function getId(): TransactionId
+    public function getId(): UuidInterface
     {
         return $this->id;
     }
 
     public function getType(): TransactionType
     {
-        return $this->type;
+        return TransactionType::from($this->type);
     }
 
-    public function getSourceWalletId(): WalletId
+    public function getSourceWallet(): Wallet
     {
-        return $this->sourceWalletId;
+        return $this->sourceWallet;
     }
 
-    public function getTargetWalletId(): ?WalletId
+    public function getTargetWallet(): ?Wallet
     {
-        return $this->targetWalletId;
+        return $this->targetWallet;
     }
 
-    public function getCategoryId(): ?CategoryId
+    public function getCategory(): ?Category
     {
-        return $this->categoryId;
+        return $this->category;
     }
 
     public function getDate(): DateTimeImmutable

@@ -4,23 +4,21 @@ declare(strict_types=1);
 
 namespace App\Infrastructure\Wallet;
 
-use App\Domain\Currency\Currency;
-use App\Domain\User\UserContext;
 use App\Domain\Wallet\Wallet;
 use App\Domain\Wallet\WalletId;
 use App\Domain\Wallet\WalletRepository;
 use App\SharedKernel\Exception\NotFoundException;
-use DateTime;
-use Doctrine\DBAL\Connection;
+use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\DBAL\Exception;
+use Doctrine\Persistence\ManagerRegistry;
+use Ramsey\Uuid\UuidInterface;
 use Throwable;
 
-final class DoctrineWalletRepository implements WalletRepository
+final class DoctrineWalletRepository extends ServiceEntityRepository implements WalletRepository
 {
-    public function __construct(
-        private readonly Connection $connection,
-        private readonly UserContext $userContext,
-    ) {
+    public function __construct(ManagerRegistry $registry)
+    {
+        parent::__construct($registry, Wallet::class);
     }
 
     /**
@@ -29,83 +27,24 @@ final class DoctrineWalletRepository implements WalletRepository
      */
     public function store(Wallet $wallet): void
     {
-        try {
-            $this->connection->beginTransaction();
-
-            $this->connection
-                ->createQueryBuilder()
-                ->insert('wallets')
-                ->values([
-                    'id' => ':id',
-                    'user_id' => ':userId',
-                    'name' => ':name',
-                    'start_balance' => ':startBalance',
-                    'currency' => ':currency',
-                ])
-                ->setParameters([
-                    'id' => $wallet->getId()->toString(),
-                    'userId' => $this->userContext->getUserId()->toString(),
-                    'name' => $wallet->getName(),
-                    'startBalance' => $wallet->getStartBalance(),
-                    'currency' => $wallet->getCurrency()->value,
-                ])
-                ->executeStatement();
-
-            $this->connection->commit();
-        } catch (Throwable $exception) {
-            $this->connection->rollBack();
-
-            throw $exception;
-        }
+        $this->getEntityManager()->persist($wallet);
+        $this->getEntityManager()->flush();
     }
 
     /**
      * @throws Exception
      */
-    public function existsByName(string $name): bool
+    public function existsByName(string $name, UuidInterface $userId): bool
     {
-        return $this->connection
-            ->createQueryBuilder()
-            ->select('1')
-            ->from('wallets')
-            ->where('user_id = :userId')
-            ->andWhere('name = :name')
-            ->setParameters([
-                'userId' => $this->userContext->getUserId()->toString(),
-                'name' => $name,
-            ])
-            ->executeQuery()
-            ->rowCount() > 0;
+        return $this->findOneBy(['name' => $name, 'userId' => $userId->toString()]) !== null;
     }
 
     /**
      * @throws Exception
      */
-    public function getById(WalletId $id): Wallet
+    public function getById(WalletId $id, UuidInterface $userId): Wallet
     {
-        $row = $this->connection
-            ->createQueryBuilder()
-            ->select('id', 'name', 'start_balance', 'currency')
-            ->from('wallets')
-            ->where('user_id = :userId')
-            ->andWhere('id = :id')
-            ->setParameters([
-                'userId' => $this->userContext->getUserId()->toString(),
-                'id' => $id->toString(),
-            ])
-            ->executeQuery()
-            ->fetchAssociative();
-
-        if (empty($row)) {
-            throw new NotFoundException('Wallet with given ID not found');
-        }
-
-        return new Wallet(
-            WalletId::fromString($row['id']),
-            $row['name'],
-            (int) $row['start_balance'],
-            Currency::from($row['currency']),
-        );
+        return $this->findOneBy(['id' => $id->toString(), 'userId' => $userId->toString()]) ?? throw new NotFoundException('Wallet with given ID not found');
     }
 
     /**
@@ -114,51 +53,16 @@ final class DoctrineWalletRepository implements WalletRepository
      */
     public function save(Wallet $wallet): void
     {
-        try {
-            $this->connection
-                ->createQueryBuilder()
-                ->update('wallets')
-                ->set('name', ':name')
-                ->set('start_balance', ':startBalance')
-                ->set('currency', ':currency')
-                ->set('updated_at', ':updatedAt')
-                ->where('user_id = :userId')
-                ->andWhere('id = :id')
-                ->setParameters([
-                    'name' => $wallet->getName(),
-                    'startBalance' => $wallet->getStartBalance(),
-                    'currency' => $wallet->getCurrency()->value,
-                    'updatedAt' => (new DateTime())->format('Y-m-d H:i:s'),
-                    'userId' => $this->userContext->getUserId()->toString(),
-                    'id' => $wallet->getId()->toString(),
-                ])
-                ->executeStatement();
-        } catch (Throwable $exception) {
-            $this->connection->rollBack();
-
-            throw $exception;
-        }
+        $this->getEntityManager()->flush();
     }
 
     /**
      * @throws Exception
-     * @throws NotFoundException
      */
-    public function delete(WalletId $id): void
+    public function delete(WalletId $id, UuidInterface $userId): void
     {
-        $affectedRows = $this->connection
-            ->createQueryBuilder()
-            ->delete('wallets')
-            ->where('user_id = :userId')
-            ->andWhere('id = :id')
-            ->setParameters([
-                'userId' => $this->userContext->getUserId()->toString(),
-                'id' => $id->toString(),
-            ])
-            ->executeStatement();
-
-        if ($affectedRows === 0) {
-            throw new NotFoundException('Wallet with given ID not found');
-        }
+        $this->getEntityManager()->remove(
+            $this->getById($id, $userId)
+        );
     }
 }

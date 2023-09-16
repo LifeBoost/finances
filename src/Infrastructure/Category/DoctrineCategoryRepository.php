@@ -8,16 +8,17 @@ use App\Domain\Category\Category;
 use App\Domain\Category\CategoryId;
 use App\Domain\Category\CategoryRepository;
 use App\Domain\Category\CategoryType;
-use App\Domain\User\UserContext;
 use App\SharedKernel\Exception\NotFoundException;
-use DateTime;
-use Doctrine\DBAL\Connection;
+use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\DBAL\Exception;
+use Doctrine\Persistence\ManagerRegistry;
+use Ramsey\Uuid\UuidInterface;
 
-final class DoctrineCategoryRepository implements CategoryRepository
+final class DoctrineCategoryRepository extends ServiceEntityRepository implements CategoryRepository
 {
-    public function __construct(private readonly Connection $connection, private readonly UserContext $userContext)
+    public function __construct(ManagerRegistry $registry)
     {
+        parent::__construct($registry, Category::class);
     }
 
     /**
@@ -25,81 +26,32 @@ final class DoctrineCategoryRepository implements CategoryRepository
      */
     public function store(Category $category): void
     {
-        $this->connection
-            ->createQueryBuilder()
-            ->insert('categories')
-            ->values([
-                'id' => ':id',
-                'user_id' => ':userId',
-                'type' => ':type',
-                'name' => ':name',
-                'icon' => ':icon'
-            ])
-            ->setParameters([
-                'id' => $category->getId()->toString(),
-                'userId' => $this->userContext->getUserId()->toString(),
-                'type' => $category->getType()->value,
-                'name' => $category->getName(),
-                'icon' => $category->getIcon(),
-            ])
-            ->executeStatement();
+        $this->getEntityManager()->persist($category);
+        $this->getEntityManager()->flush();
     }
 
     /**
      * @throws Exception
      */
-    public function existsByName(string $name, CategoryType $type): bool
+    public function existsByName(string $name, CategoryType $type, UuidInterface $userId): bool
     {
-        return $this->connection
-                ->createQueryBuilder()
-                ->select('1')
-                ->from('categories')
-                ->where('user_id = :userId')
-                ->andWhere('name = :name')
-                ->andWhere('type = :type')
-                ->setParameters([
-                    'userId' => $this->userContext->getUserId()->toString(),
-                    'name' => $name,
-                    'type' => $type->value,
-                ])
-                ->executeQuery()
-                ->rowCount() > 0;
+        return $this->findOneBy([
+            'name' => $name,
+            'type' => $type->value,
+            'userId' => $userId->toString(),
+        ]) !== null;
     }
 
     /**
      * @throws Exception
      * @throws NotFoundException
      */
-    public function getById(CategoryId $id): Category
+    public function getById(CategoryId $id, UuidInterface $userId): Category
     {
-        $row = $this->connection
-            ->createQueryBuilder()
-            ->select(
-                'id',
-                'type',
-                'name',
-                'icon'
-            )
-            ->from('categories')
-            ->where('user_id = :userId')
-            ->andWhere('id = :id')
-            ->setParameters([
-                'userId' => $this->userContext->getUserId()->toString(),
-                'id' => $id->toString(),
-            ])
-            ->executeQuery()
-            ->fetchAssociative();
-
-        if (empty($row)) {
-            throw new NotFoundException('Category with given ID not found');
-        }
-
-        return new Category(
-            CategoryId::fromString($row['id']),
-            CategoryType::from($row['type']),
-            $row['name'],
-            $row['icon'],
-        );
+        return $this->findOneBy([
+            'id' => $id->toString(),
+            'userId' => $userId->toString(),
+        ]) ?? throw new NotFoundException('Category with given ID not found');
     }
 
     /**
@@ -107,45 +59,18 @@ final class DoctrineCategoryRepository implements CategoryRepository
      */
     public function save(Category $category): void
     {
-        $this->connection
-            ->createQueryBuilder()
-            ->update('categories')
-            ->set('type', ':type')
-            ->set('name', ':name')
-            ->set('icon', ':icon')
-            ->set('updated_at', ':updatedAt')
-            ->where('user_id = :userId')
-            ->andWhere('id = :id')
-            ->setParameters([
-                'type' => $category->getType()->value,
-                'name' => $category->getName(),
-                'icon' => $category->getIcon(),
-                'updatedAt' => (new DateTime())->format('Y-m-d H:i:s'),
-                'userId' => $this->userContext->getUserId()->toString(),
-                'id' => $category->getId()->toString(),
-            ])
-            ->executeStatement();
+        $this->getEntityManager()->flush();
     }
 
     /**
      * @throws NotFoundException
      * @throws Exception
      */
-    public function delete(CategoryId $id): void
+    public function delete(CategoryId $id, UuidInterface $userId): void
     {
-        $affectedRows = $this->connection
-            ->createQueryBuilder()
-            ->delete('categories')
-            ->where('user_id = :userId')
-            ->andWhere('id = :id')
-            ->setParameters([
-                'userId' => $this->userContext->getUserId()->toString(),
-                'id' => $id->toString(),
-            ])
-            ->executeStatement();
-
-        if ($affectedRows === 0) {
-            throw new NotFoundException('Category with given ID not found');
-        }
+        $this->getEntityManager()->remove(
+            $this->getById($id, $userId)
+        );
+        $this->getEntityManager()->flush();
     }
 }
