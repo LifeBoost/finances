@@ -20,4 +20,5 @@
 ###< phpunit/phpunit ###
 
 /cache/
-.idea
+/.idea/
+/.phpunit.cache/

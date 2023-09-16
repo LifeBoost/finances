@@ -8,12 +8,11 @@ namespace App\Tests\Integration\Wallet;
 
 use App\Tests\Integration\BaseTestCase;
 use App\Tests\Integration\Mother\WalletMother;
+use PHPUnit\Framework\Attributes\Test;
 
 final class GetAllWalletsTest extends BaseTestCase
 {
-    /**
-     * @test
-     */
+    #[Test]
     public function getAllWalletsWithData(): void
     {
         $this->walletMother->create('Wallet 1');
@@ -25,9 +24,7 @@ final class GetAllWalletsTest extends BaseTestCase
         self::assertCount(3, $this->parseJson($data->getContent()));
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function getAllWalletsWithEmptyData(): void
     {
         $data = $this->get(WalletMother::URL_PATTERN);

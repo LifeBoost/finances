@@ -8,13 +8,12 @@ namespace App\Tests\Integration\Category;
 
 use App\Tests\Integration\BaseTestCase;
 use App\Tests\Integration\Mother\CategoryMother;
+use PHPUnit\Framework\Attributes\Test;
 use Symfony\Component\HttpFoundation\Response;
 
 final class GetAllCategoriesTest extends BaseTestCase
 {
-    /**
-     * @test
-     */
+    #[Test]
     public function tryFetchAllCategoriesWithEmptyList(): void
     {
         $response = $this->get(CategoryMother::getUrlPattern());
@@ -25,9 +24,7 @@ final class GetAllCategoriesTest extends BaseTestCase
         self::assertCount(0, $responseData);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function tryFetchAllCategoriesWithNotEmptyList(): void
     {
         $this->categoryMother->create(CategoryMother::prepareJsonData(name: 'Category 1'));
@@ -42,9 +39,7 @@ final class GetAllCategoriesTest extends BaseTestCase
         self::assertCount(3, $responseData);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function tryFetchAllCategoriesStoredOnAnotherUser(): void
     {
         $categoryMother = new CategoryMother(self::createHttpClient(self::SECOND_TEST_JWT_TOKEN));

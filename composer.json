@@ -71,7 +71,8 @@
         "phpstan:check": "phpstan -cphpstan.neon --ansi analyse",
         "phpstan:baseline": "phpstan analyse -cphpstan.neon --generate-baseline phpstan-baseline.php",
         "cs:check": "ecs check",
-        "cs:fix": "ecs check --fix"
+        "cs:fix": "ecs check --fix",
+        "phpunit:integration": "phpunit --testsuite=Integration"
     },
     "conflict": {
         "symfony/symfony": "*"
@@ -84,7 +85,7 @@
     },
     "require-dev": {
         "phpstan/phpstan": "^1.10",
-        "phpunit/phpunit": "^9.5",
+        "phpunit/phpunit": "^10",
         "symfony/browser-kit": "6.3.*",
         "symfony/css-selector": "6.3.*",
         "symfony/phpunit-bridge": "^6.3",

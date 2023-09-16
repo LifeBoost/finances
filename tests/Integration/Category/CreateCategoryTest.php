@@ -9,14 +9,13 @@ namespace App\Tests\Integration\Category;
 use App\Domain\Category\CategoryType;
 use App\Tests\Integration\BaseTestCase;
 use App\Tests\Integration\Mother\CategoryMother;
+use PHPUnit\Framework\Attributes\Test;
 use Ramsey\Uuid\Uuid;
 use Symfony\Component\HttpFoundation\Response;
 
 final class CreateCategoryTest extends BaseTestCase
 {
-    /**
-     * @test
-     */
+    #[Test]
     public function tryCreateWithoutError(): void
     {
         $type = CategoryType::EXPENSE->value;
@@ -32,9 +31,7 @@ final class CreateCategoryTest extends BaseTestCase
         self::assertTrue(Uuid::isValid($responseData['id']));
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function tryCreateWithInvalidType(): void
     {
         $response = $this->post(CategoryMother::getUrlPattern(), CategoryMother::prepareJsonData('invalid'));
@@ -49,9 +46,7 @@ final class CreateCategoryTest extends BaseTestCase
         self::assertEquals('type', $responseData['errors'][0]['propertyPath']);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function tryCreateWithInvalidName(): void
     {
         $response = $this->post(CategoryMother::getUrlPattern(), CategoryMother::prepareJsonData(name: ''));
@@ -68,9 +63,7 @@ final class CreateCategoryTest extends BaseTestCase
         self::assertEquals('name', $responseData['errors'][1]['propertyPath']);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function tryCreateWithInvalidIcon(): void
     {
         $response = $this->post(CategoryMother::getUrlPattern(), CategoryMother::prepareJsonData(icon: ''));
@@ -85,9 +78,7 @@ final class CreateCategoryTest extends BaseTestCase
         self::assertEquals('icon', $responseData['errors'][0]['propertyPath']);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function tryCreateWithDuplicatedNameAndDifferentTypes(): void
     {
         $name = 'Unique name';
@@ -115,9 +106,7 @@ final class CreateCategoryTest extends BaseTestCase
         self::assertTrue(Uuid::isValid($responseData['id']));
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function tryCreateWithDuplicatedNameAndTypes(): void
     {
         $response = $this->post(CategoryMother::getUrlPattern(), CategoryMother::prepareJsonData());
@@ -137,9 +126,7 @@ final class CreateCategoryTest extends BaseTestCase
         self::assertArrayHasKey('errors', $responseData);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function tryCreateWithDuplicatedNameOnDifferentUsers(): void
     {
         $secondCategoryMother = new CategoryMother(self::createHttpClient(self::SECOND_TEST_JWT_TOKEN));

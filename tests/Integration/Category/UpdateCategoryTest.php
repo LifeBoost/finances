@@ -9,14 +9,13 @@ namespace App\Tests\Integration\Category;
 use App\Domain\Category\CategoryType;
 use App\Tests\Integration\BaseTestCase;
 use App\Tests\Integration\Mother\CategoryMother;
+use PHPUnit\Framework\Attributes\Test;
 use Ramsey\Uuid\Uuid;
 use Symfony\Component\HttpFoundation\Response;
 
 final class UpdateCategoryTest extends BaseTestCase
 {
-    /**
-     * @test
-     */
+    #[Test]
     public function tryUpdateCategoryWithoutError(): void
     {
         $newType = CategoryType::EXPENSE->value;
@@ -39,9 +38,7 @@ final class UpdateCategoryTest extends BaseTestCase
         self::assertEquals($newIcon, $category['icon']);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function tryUpdateCategoryForAnotherUser(): void
     {
         $secondCategoryMother = new CategoryMother(self::createHttpClient(self::SECOND_TEST_JWT_TOKEN));
@@ -68,9 +65,7 @@ final class UpdateCategoryTest extends BaseTestCase
         self::assertEquals($oldIcon, $category['icon']);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function tryUpdateCategoryToDuplicatedNameAndType(): void
     {
         $type = CategoryType::INCOME->value;
@@ -90,9 +85,7 @@ final class UpdateCategoryTest extends BaseTestCase
         self::assertArrayHasKey('errors', $responseData);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function tryUpdateCategoryWithInvalidType(): void
     {
         $category = $this->categoryMother->create(CategoryMother::prepareJsonData());
@@ -112,9 +105,7 @@ final class UpdateCategoryTest extends BaseTestCase
         self::assertEquals('type', $responseData['errors'][0]['propertyPath']);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function tryUpdateCategoryWithInvalidName(): void
     {
         $category = $this->categoryMother->create(CategoryMother::prepareJsonData());
@@ -136,9 +127,7 @@ final class UpdateCategoryTest extends BaseTestCase
         self::assertEquals('name', $responseData['errors'][1]['propertyPath']);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function tryUpdateCategoryWithInvalidIcon(): void
     {
         $category = $this->categoryMother->create(CategoryMother::prepareJsonData());
@@ -158,9 +147,7 @@ final class UpdateCategoryTest extends BaseTestCase
         self::assertEquals('icon', $responseData['errors'][0]['propertyPath']);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function tryUpdateNotFoundCategory(): void
     {
         $response = $this->post(sprintf('%s/%s', CategoryMother::getUrlPattern(), Uuid::uuid4()->toString()), CategoryMother::prepareJsonData());
@@ -172,9 +159,7 @@ final class UpdateCategoryTest extends BaseTestCase
         self::assertArrayHasKey('errors', $responseData);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function tryUpdateCategoryOnlyIcon(): void
     {
         $type = CategoryType::INCOME->value;
