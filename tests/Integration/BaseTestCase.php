@@ -7,6 +7,7 @@ declare(strict_types=1);
 namespace App\Tests\Integration;
 
 use App\Tests\Integration\Mother\CategoryMother;
+use App\Tests\Integration\Mother\TransactionMother;
 use App\Tests\Integration\Mother\WalletMother;
 use Symfony\Bundle\FrameworkBundle\Console\Application;
 use Symfony\Bundle\FrameworkBundle\KernelBrowser;
@@ -22,6 +23,7 @@ abstract class BaseTestCase extends WebTestCase
 
     protected WalletMother $walletMother;
     protected CategoryMother $categoryMother;
+    protected TransactionMother $transactionMother;
 
     protected function setUp(): void
     {
@@ -33,6 +35,7 @@ abstract class BaseTestCase extends WebTestCase
 
         $this->walletMother = new WalletMother(self::createHttpClient());
         $this->categoryMother = new CategoryMother(self::createHttpClient());
+        $this->transactionMother = new TransactionMother(self::createHttpClient());
     }
 
     protected function tearDown(): void

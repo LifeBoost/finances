@@ -9,7 +9,9 @@ use App\SharedKernel\Messenger\QueryHandlerInterface;
 use DateTimeImmutable;
 use Doctrine\DBAL\Connection;
 use Doctrine\DBAL\Exception;
+use Symfony\Component\Messenger\Attribute\AsMessageHandler;
 
+#[AsMessageHandler]
 final class GetAllTransactionsHandler implements QueryHandlerInterface
 {
     public function __construct(

@@ -66,8 +66,8 @@ final class Transaction
         $this->validateType($type, $targetWalletId, $categoryId);
 
         $this->type = $type;
-        $this->sourceWallet = $sourceWalletId;
-        $this->targetWallet = $targetWalletId;
+        $this->sourceWalletId = $sourceWalletId;
+        $this->targetWalletId = $targetWalletId;
         $this->categoryId = $categoryId;
         $this->date = $date;
         $this->description = $description;

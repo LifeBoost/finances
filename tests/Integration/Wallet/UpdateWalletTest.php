@@ -77,7 +77,7 @@ final class UpdateWalletTest extends BaseTestCase
 
         self::assertArrayHasKey('errors', $responseData);
         self::assertEquals('startBalance', $responseData['errors'][0]['propertyPath']);
-        self::assertEquals('This value should be greater than 0.', $responseData['errors'][0]['message']);
+        self::assertEquals('This value should be greater than or equal to 0.', $responseData['errors'][0]['message']);
     }
 
     #[Test]
@@ -100,5 +100,25 @@ final class UpdateWalletTest extends BaseTestCase
         self::assertArrayHasKey('errors', $responseData);
         self::assertEquals('currency', $responseData['errors'][0]['propertyPath']);
         self::assertEquals('The value you selected is not a valid choice.', $responseData['errors'][0]['message']);
+    }
+
+    #[Test]
+    public function tryUpdateWalletStartBalanceToZero(): void
+    {
+        $wallet = $this->walletMother->create();
+
+        $response = $this->post(sprintf('%s/%s', WalletMother::URL_PATTERN, $wallet['id']), [
+            'name' => 'Wallet 1',
+            'startBalance' => 0,
+            'currency' => 'PLN',
+        ]);
+
+        self::assertEquals(Response::HTTP_NO_CONTENT, $response->getStatusCode());
+
+        $wallet = $this->walletMother->getById($wallet['id']);
+
+        self::assertEquals('Wallet 1', $wallet['name']);
+        self::assertEquals(0, $wallet['startBalance']);
+        self::assertEquals('PLN', $wallet['currency']);
     }
 }

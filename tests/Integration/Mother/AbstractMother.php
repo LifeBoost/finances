@@ -19,11 +19,11 @@ abstract readonly class AbstractMother
     /**
      * @throws JsonException
      */
-    public function create(array $jsonData): array
+    public function create(?array $jsonData = null): array
     {
         $this->client->restart();
 
-        $this->client->jsonRequest(Request::METHOD_POST, static::getUrlPattern(), $jsonData);
+        $this->client->jsonRequest(Request::METHOD_POST, static::getUrlPattern(), $jsonData ?? CategoryMother::prepareJsonData());
 
         return json_decode($this->client->getResponse()->getContent(), true, 512, JSON_THROW_ON_ERROR);
     }
