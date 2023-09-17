@@ -7,7 +7,6 @@ namespace App\Infrastructure\Doctrine;
 use App\Domain\User\UserContext;
 use App\SharedKernel\Entity;
 use Doctrine\Bundle\DoctrineBundle\Attribute\AsDoctrineListener;
-use Doctrine\Common\EventSubscriber;
 use Doctrine\ORM\Event\PrePersistEventArgs;
 use Doctrine\ORM\Events;
 use Ramsey\Uuid\Uuid;

@@ -5,12 +5,10 @@ declare(strict_types=1);
 namespace App\Application\Wallet\Update;
 
 use App\Domain\Currency\Currency;
-use App\Domain\User\UserContext;
 use App\Domain\Wallet\WalletId;
 use App\Domain\Wallet\WalletRepository;
 use App\SharedKernel\Exception\NotFoundException;
 use App\SharedKernel\Messenger\CommandHandlerInterface;
-use Ramsey\Uuid\Uuid;
 
 final class UpdateWalletHandler implements CommandHandlerInterface
 {

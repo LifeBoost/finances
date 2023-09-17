@@ -7,10 +7,8 @@ namespace App\Application\Category\Create;
 use App\Domain\Category\Category;
 use App\Domain\Category\CategoryRepository;
 use App\Domain\Category\CategoryType;
-use App\Domain\User\UserContext;
 use App\SharedKernel\Exception\DomainException;
 use App\SharedKernel\Messenger\CommandHandlerInterface;
-use Ramsey\Uuid\Uuid;
 use Ramsey\Uuid\UuidInterface;
 
 final readonly class CreateCategoryHandler implements CommandHandlerInterface

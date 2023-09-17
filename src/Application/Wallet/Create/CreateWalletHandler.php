@@ -5,12 +5,10 @@ declare(strict_types=1);
 namespace App\Application\Wallet\Create;
 
 use App\Domain\Currency\Currency;
-use App\Domain\User\UserContext;
 use App\Domain\Wallet\Wallet;
 use App\Domain\Wallet\WalletRepository;
 use App\SharedKernel\Exception\DomainException;
 use App\SharedKernel\Messenger\CommandHandlerInterface;
-use Ramsey\Uuid\Uuid;
 use Ramsey\Uuid\UuidInterface;
 
 final readonly class CreateWalletHandler implements CommandHandlerInterface

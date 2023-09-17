@@ -8,12 +8,9 @@ use App\Domain\Transaction\Transaction;
 use App\Domain\Transaction\TransactionId;
 use App\Domain\Transaction\TransactionRepository;
 use App\Domain\User\UserContext;
-use App\SharedKernel\Exception\DomainException;
 use App\SharedKernel\Exception\NotFoundException;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
-use Doctrine\DBAL\Exception;
 use Doctrine\Persistence\ManagerRegistry;
-use Ramsey\Uuid\UuidInterface;
 
 final class DoctrineTransactionRepository extends ServiceEntityRepository implements TransactionRepository
 {

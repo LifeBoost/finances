@@ -6,9 +6,7 @@ namespace App\Application\Category\Delete;
 
 use App\Domain\Category\CategoryId;
 use App\Domain\Category\CategoryRepository;
-use App\Domain\User\UserContext;
 use App\SharedKernel\Messenger\CommandHandlerInterface;
-use Ramsey\Uuid\Uuid;
 
 final class DeleteCategoryHandler implements CommandHandlerInterface
 {

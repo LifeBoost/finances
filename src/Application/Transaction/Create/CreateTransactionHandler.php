@@ -9,14 +9,12 @@ use App\Domain\Category\CategoryRepository;
 use App\Domain\Transaction\Transaction;
 use App\Domain\Transaction\TransactionRepository;
 use App\Domain\Transaction\TransactionType;
-use App\Domain\User\UserContext;
 use App\Domain\Wallet\WalletId;
 use App\Domain\Wallet\WalletRepository;
 use App\SharedKernel\Exception\DomainException;
 use App\SharedKernel\Exception\NotFoundException;
 use App\SharedKernel\Messenger\CommandHandlerInterface;
 use DateTimeImmutable;
-use Ramsey\Uuid\Uuid;
 use Ramsey\Uuid\UuidInterface;
 
 final class CreateTransactionHandler implements CommandHandlerInterface

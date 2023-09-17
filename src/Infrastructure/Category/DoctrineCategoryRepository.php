@@ -11,9 +11,7 @@ use App\Domain\Category\CategoryType;
 use App\Domain\User\UserContext;
 use App\SharedKernel\Exception\NotFoundException;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
-use Doctrine\DBAL\Exception;
 use Doctrine\Persistence\ManagerRegistry;
-use Ramsey\Uuid\UuidInterface;
 
 final class DoctrineCategoryRepository extends ServiceEntityRepository implements CategoryRepository
 {

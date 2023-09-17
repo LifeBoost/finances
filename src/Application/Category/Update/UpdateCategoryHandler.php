@@ -7,11 +7,9 @@ namespace App\Application\Category\Update;
 use App\Domain\Category\CategoryId;
 use App\Domain\Category\CategoryRepository;
 use App\Domain\Category\CategoryType;
-use App\Domain\User\UserContext;
 use App\SharedKernel\Exception\DomainException;
 use App\SharedKernel\Exception\NotFoundException;
 use App\SharedKernel\Messenger\CommandHandlerInterface;
-use Ramsey\Uuid\Uuid;
 use Symfony\Component\Messenger\Attribute\AsMessageHandler;
 
 #[AsMessageHandler]
