@@ -13,20 +13,20 @@ use App\SharedKernel\Messenger\CommandHandlerInterface;
 use Ramsey\Uuid\Uuid;
 use Ramsey\Uuid\UuidInterface;
 
-final class CreateCategoryHandler implements CommandHandlerInterface
+final readonly class CreateCategoryHandler implements CommandHandlerInterface
 {
-    public function __construct(private readonly CategoryRepository $repository, private readonly UserContext $userContext)
-    {
+    public function __construct(
+        private CategoryRepository $repository,
+    ) {
     }
 
     public function __invoke(CreateCategoryCommand $command): UuidInterface
     {
-        if ($this->repository->existsByName($command->name, CategoryType::from($command->type), Uuid::fromString($this->userContext->getUserId()->toString()))) {
+        if ($this->repository->existsByName($command->name, CategoryType::from($command->type))) {
             throw new DomainException('Category with given name and type already exists');
         }
 
         $category = Category::create(
-            Uuid::fromString($this->userContext->getUserId()->toString()),
             CategoryType::from($command->type),
             $command->name,
             $command->icon,

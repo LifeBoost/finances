@@ -35,8 +35,6 @@ class Transaction extends Entity
         #[ORM\ManyToOne(targetEntity: Category::class)]
         #[ORM\JoinColumn(name: 'category_id', referencedColumnName: 'id')]
         private ?Category $category,
-        #[ORM\Column(type: 'uuid')]
-        public readonly UuidInterface $userId,
         #[ORM\Column(type: 'date_immutable')]
         private DateTimeImmutable $date,
         #[ORM\Column(length: 255)]
@@ -59,7 +57,6 @@ class Transaction extends Entity
         Wallet $sourceWallet,
         ?Wallet $targetWallet,
         ?Category $category,
-        UuidInterface $userId,
         DateTimeImmutable $date,
         string $description,
         int $amount
@@ -70,7 +67,6 @@ class Transaction extends Entity
             $sourceWallet,
             $targetWallet,
             $category,
-            $userId,
             $date,
             $description,
             $amount,

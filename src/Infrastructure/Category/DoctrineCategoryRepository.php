@@ -8,6 +8,7 @@ use App\Domain\Category\Category;
 use App\Domain\Category\CategoryId;
 use App\Domain\Category\CategoryRepository;
 use App\Domain\Category\CategoryType;
+use App\Domain\User\UserContext;
 use App\SharedKernel\Exception\NotFoundException;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\DBAL\Exception;
@@ -16,60 +17,43 @@ use Ramsey\Uuid\UuidInterface;
 
 final class DoctrineCategoryRepository extends ServiceEntityRepository implements CategoryRepository
 {
-    public function __construct(ManagerRegistry $registry)
+    public function __construct(ManagerRegistry $registry, private readonly UserContext $userContext)
     {
         parent::__construct($registry, Category::class);
     }
 
-    /**
-     * @throws Exception
-     */
     public function store(Category $category): void
     {
         $this->getEntityManager()->persist($category);
         $this->getEntityManager()->flush();
     }
 
-    /**
-     * @throws Exception
-     */
-    public function existsByName(string $name, CategoryType $type, UuidInterface $userId): bool
+    public function existsByName(string $name, CategoryType $type): bool
     {
         return $this->findOneBy([
             'name' => $name,
             'type' => $type->value,
-            'userId' => $userId->toString(),
+            'userId' => $this->userContext->getUserId()->toString(),
         ]) !== null;
     }
 
-    /**
-     * @throws Exception
-     * @throws NotFoundException
-     */
-    public function getById(CategoryId $id, UuidInterface $userId): Category
+    public function getById(CategoryId $id): Category
     {
         return $this->findOneBy([
             'id' => $id->toString(),
-            'userId' => $userId->toString(),
+            'userId' => $this->userContext->getUserId()->toString(),
         ]) ?? throw new NotFoundException('Category with given ID not found');
     }
 
-    /**
-     * @throws Exception
-     */
     public function save(Category $category): void
     {
         $this->getEntityManager()->flush();
     }
 
-    /**
-     * @throws NotFoundException
-     * @throws Exception
-     */
-    public function delete(CategoryId $id, UuidInterface $userId): void
+    public function delete(CategoryId $id): void
     {
         $this->getEntityManager()->remove(
-            $this->getById($id, $userId)
+            $this->getById($id)
         );
         $this->getEntityManager()->flush();
     }

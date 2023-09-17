@@ -13,22 +13,23 @@ use App\SharedKernel\Messenger\CommandHandlerInterface;
 use Ramsey\Uuid\Uuid;
 use Ramsey\Uuid\UuidInterface;
 
-final class CreateWalletHandler implements CommandHandlerInterface
+final readonly class CreateWalletHandler implements CommandHandlerInterface
 {
     public function __construct(
-        private readonly WalletRepository $repository,
-        private readonly UserContext $userContext,
+        private WalletRepository $repository,
     ) {
     }
 
+    /**
+     * @throws DomainException
+     */
     public function __invoke(CreateWalletCommand $command): UuidInterface
     {
-        if ($this->repository->existsByName($command->name, Uuid::fromString($this->userContext->getUserId()->toString()))) {
+        if ($this->repository->existsByName($command->name)) {
             throw new DomainException('Wallet with given name already exists');
         }
 
         $wallet = Wallet::create(
-            Uuid::fromString($this->userContext->getUserId()->toString()),
             $command->name,
             $command->startBalance,
             Currency::from($command->currency),
