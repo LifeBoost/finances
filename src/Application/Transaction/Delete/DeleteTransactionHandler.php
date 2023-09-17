@@ -11,9 +11,9 @@ use App\SharedKernel\Exception\NotFoundException;
 use App\SharedKernel\Messenger\CommandHandlerInterface;
 use Ramsey\Uuid\Uuid;
 
-final class DeleteTransactionHandler implements CommandHandlerInterface
+final readonly class DeleteTransactionHandler implements CommandHandlerInterface
 {
-    public function __construct(private readonly TransactionRepository $repository, private readonly UserContext $userContext)
+    public function __construct(private TransactionRepository $repository)
     {
     }
 
@@ -22,6 +22,6 @@ final class DeleteTransactionHandler implements CommandHandlerInterface
      */
     public function __invoke(DeleteTransactionCommand $command): void
     {
-        $this->repository->delete(TransactionId::fromString($command->id), Uuid::fromString($this->userContext->getUserId()->toString()));
+        $this->repository->delete(TransactionId::fromString($command->id));
     }
 }

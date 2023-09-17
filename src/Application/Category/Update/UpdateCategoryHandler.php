@@ -17,7 +17,7 @@ use Symfony\Component\Messenger\Attribute\AsMessageHandler;
 #[AsMessageHandler]
 final readonly class UpdateCategoryHandler implements CommandHandlerInterface
 {
-    public function __construct(private CategoryRepository $repository, private UserContext $userContext)
+    public function __construct(private CategoryRepository $repository)
     {
     }
 
@@ -27,7 +27,7 @@ final readonly class UpdateCategoryHandler implements CommandHandlerInterface
      */
     public function __invoke(UpdateCategoryCommand $command): void
     {
-        $category = $this->repository->getById(CategoryId::fromString($command->id), Uuid::fromString($this->userContext->getUserId()->toString()));
+        $category = $this->repository->getById(CategoryId::fromString($command->id));
 
         if (
             $category->getName() === $command->name
@@ -51,7 +51,7 @@ final readonly class UpdateCategoryHandler implements CommandHandlerInterface
             $command->icon,
         );
 
-        if ($this->repository->existsByName($category->getName(), CategoryType::from($category->getType()), Uuid::fromString($this->userContext->getUserId()->toString()))) {
+        if ($this->repository->existsByName($category->getName(), CategoryType::from($category->getType()))) {
             throw new DomainException('Category with given name and type already exists');
         }
 

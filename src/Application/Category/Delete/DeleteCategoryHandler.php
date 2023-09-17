@@ -12,12 +12,12 @@ use Ramsey\Uuid\Uuid;
 
 final class DeleteCategoryHandler implements CommandHandlerInterface
 {
-    public function __construct(private readonly CategoryRepository $repository, private readonly UserContext $userContext)
+    public function __construct(private readonly CategoryRepository $repository)
     {
     }
 
     public function __invoke(DeleteCategoryCommand $command): void
     {
-        $this->repository->delete(CategoryId::fromString($command->id), Uuid::fromString($this->userContext->getUserId()->toString()));
+        $this->repository->delete(CategoryId::fromString($command->id));
     }
 }

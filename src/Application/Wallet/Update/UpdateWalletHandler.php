@@ -16,7 +16,6 @@ final class UpdateWalletHandler implements CommandHandlerInterface
 {
     public function __construct(
         private readonly WalletRepository $walletRepository,
-        private readonly UserContext $userContext,
     ) {
     }
 
@@ -25,7 +24,7 @@ final class UpdateWalletHandler implements CommandHandlerInterface
      */
     public function __invoke(UpdateWalletCommand $command): void
     {
-        $wallet = $this->walletRepository->getById(WalletId::fromString($command->id), Uuid::fromString($this->userContext->getUserId()->toString()));
+        $wallet = $this->walletRepository->getById(WalletId::fromString($command->id));
 
         $wallet->update(
             $command->name,
