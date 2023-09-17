@@ -4,20 +4,19 @@ declare(strict_types=1);
 
 namespace App\Domain\Category;
 
+use App\SharedKernel\Entity;
 use Doctrine\ORM\Mapping as ORM;
 use Ramsey\Uuid\Uuid;
 use Ramsey\Uuid\UuidInterface;
 
 #[ORM\Entity(repositoryClass: CategoryRepository::class)]
 #[ORM\Table(name: 'categories')]
-class Category
+class Category extends Entity
 {
     public function __construct(
         #[ORM\Id]
         #[ORM\Column(type: 'uuid', unique: true)]
         private UuidInterface $id,
-        #[ORM\Column(type: 'uuid')]
-        public readonly UuidInterface $userId,
         #[ORM\Column()]
         private string $type,
         #[ORM\Column()]
@@ -28,14 +27,12 @@ class Category
     }
 
     public static function create(
-        UuidInterface $userId,
         CategoryType $type,
         string $name,
         string $icon,
     ): self {
         return new self(
             Uuid::uuid4(),
-            $userId,
             $type->value,
             $name,
             $icon,

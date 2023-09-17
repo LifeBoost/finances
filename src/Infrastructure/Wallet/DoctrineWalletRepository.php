@@ -4,26 +4,24 @@ declare(strict_types=1);
 
 namespace App\Infrastructure\Wallet;
 
+use App\Domain\User\UserContext;
 use App\Domain\Wallet\Wallet;
 use App\Domain\Wallet\WalletId;
 use App\Domain\Wallet\WalletRepository;
 use App\SharedKernel\Exception\NotFoundException;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
-use Doctrine\DBAL\Exception;
 use Doctrine\Persistence\ManagerRegistry;
-use Ramsey\Uuid\UuidInterface;
 use Throwable;
 
 final class DoctrineWalletRepository extends ServiceEntityRepository implements WalletRepository
 {
-    public function __construct(ManagerRegistry $registry)
+    public function __construct(ManagerRegistry $registry, private readonly UserContext $userContext)
     {
         parent::__construct($registry, Wallet::class);
     }
 
     /**
      * @throws Throwable
-     * @throws Exception
      */
     public function store(Wallet $wallet): void
     {
@@ -31,38 +29,31 @@ final class DoctrineWalletRepository extends ServiceEntityRepository implements 
         $this->getEntityManager()->flush();
     }
 
-    /**
-     * @throws Exception
-     */
-    public function existsByName(string $name, UuidInterface $userId): bool
+    public function existsByName(string $name): bool
     {
-        return $this->findOneBy(['name' => $name, 'userId' => $userId->toString()]) !== null;
+        return $this->findOneBy([
+            'name' => $name,
+            'userId' => $this->userContext->getUserId()->toString(),
+        ]) !== null;
     }
 
-    /**
-     * @throws Exception
-     */
-    public function getById(WalletId $id, UuidInterface $userId): Wallet
+    public function getById(WalletId $id): Wallet
     {
-        return $this->findOneBy(['id' => $id->toString(), 'userId' => $userId->toString()]) ?? throw new NotFoundException('Wallet with given ID not found');
+        return $this->findOneBy([
+            'id' => $id->toString(),
+            'userId' => $this->userContext->getUserId()->toString(),
+        ]) ?? throw new NotFoundException('Wallet with given ID not found');
     }
 
-    /**
-     * @throws Throwable
-     * @throws Exception
-     */
     public function save(Wallet $wallet): void
     {
         $this->getEntityManager()->flush();
     }
 
-    /**
-     * @throws Exception
-     */
-    public function delete(WalletId $id, UuidInterface $userId): void
+    public function delete(WalletId $id): void
     {
         $this->getEntityManager()->remove(
-            $this->getById($id, $userId)
+            $this->getById($id)
         );
     }
 }
