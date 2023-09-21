@@ -15,9 +15,7 @@ use Symfony\Component\Messenger\Attribute\AsMessageHandler;
 #[AsMessageHandler]
 final readonly class UpdateCategoryHandler implements CommandHandlerInterface
 {
-    public function __construct(private CategoryRepository $repository)
-    {
-    }
+    public function __construct(private CategoryRepository $repository) {}
 
     /**
      * @throws NotFoundException

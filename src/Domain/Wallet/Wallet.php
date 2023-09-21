@@ -12,7 +12,7 @@ use Doctrine\ORM\Mapping as ORM;
 
 #[ORM\Entity(repositoryClass: WalletRepository::class)]
 #[ORM\Table(name: 'wallets')]
-#[ORM\UniqueConstraint(name: "wallets_name_unique_index", columns: ['name', 'user_id'])]
+#[ORM\UniqueConstraint(name: 'wallets_name_unique_index', columns: ['name', 'user_id'])]
 class Wallet
 {
     public function __construct(
@@ -27,8 +27,7 @@ class Wallet
         private int $startBalance,
         #[ORM\Column]
         private string $currency,
-    ) {
-    }
+    ) {}
 
     public static function create(
         string $name,

@@ -21,6 +21,5 @@ final readonly class CreateCategoryRequest
         public string $name,
         #[Assert\NotBlank]
         public string $icon,
-    ) {
-    }
+    ) {}
 }

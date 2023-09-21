@@ -6,6 +6,4 @@ namespace App\SharedKernel\Exception;
 
 use Exception;
 
-final class DomainException extends Exception
-{
-}
+final class DomainException extends Exception {}

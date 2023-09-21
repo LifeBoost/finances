@@ -11,6 +11,5 @@ final class UpdateCategoryCommand
         public readonly string $name,
         public readonly string $type,
         public readonly string $icon,
-    ) {
-    }
+    ) {}
 }

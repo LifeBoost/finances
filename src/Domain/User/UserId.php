@@ -6,6 +6,4 @@ namespace App\Domain\User;
 
 use App\SharedKernel\Id;
 
-final class UserId extends Id
-{
-}
+final class UserId extends Id {}

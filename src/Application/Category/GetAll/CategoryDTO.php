@@ -11,6 +11,5 @@ final class CategoryDTO
         public readonly string $type,
         public readonly string $name,
         public readonly string $icon,
-    ) {
-    }
+    ) {}
 }

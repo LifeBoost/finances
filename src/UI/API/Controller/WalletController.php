@@ -27,8 +27,7 @@ final class WalletController extends AbstractController
     public function __construct(
         private readonly MessageBusInterface $commandBus,
         private readonly MessageBusInterface $queryBus,
-    ) {
-    }
+    ) {}
 
     #[Route('', name: 'create', methods: ['POST'])]
     public function create(#[MapRequestPayload] CreateWalletRequest $request): Response

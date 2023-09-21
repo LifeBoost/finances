@@ -8,6 +8,5 @@ final readonly class GetAllCategoriesQuery
 {
     public function __construct(
         public ?string $filterType = null,
-    ) {
-    }
+    ) {}
 }

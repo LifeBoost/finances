@@ -12,9 +12,7 @@ abstract readonly class AbstractMother
 {
     abstract public static function getUrlPattern(): string;
 
-    public function __construct(private KernelBrowser $client)
-    {
-    }
+    public function __construct(private KernelBrowser $client) {}
 
     /**
      * @throws JsonException

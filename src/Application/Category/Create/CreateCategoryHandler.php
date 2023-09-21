@@ -17,8 +17,7 @@ final readonly class CreateCategoryHandler implements CommandHandlerInterface
     public function __construct(
         private CategoryRepository $repository,
         private UserContext $userContext,
-    ) {
-    }
+    ) {}
 
     public function __invoke(CreateCategoryCommand $command): Id
     {

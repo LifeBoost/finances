@@ -15,6 +15,5 @@ final class TransactionDTO
         public readonly string $date,
         public readonly string $description,
         public readonly int $amount,
-    ) {
-    }
+    ) {}
 }

@@ -152,15 +152,9 @@ final class CreateTransactionTest extends BaseTestCase
         self::assertEquals(Response::HTTP_CONFLICT, $response->getStatusCode());
     }
 
-    public function tryCreateTransactionWithSourceWalletFromAnotherUser(): void
-    {
-    }
+    public function tryCreateTransactionWithSourceWalletFromAnotherUser(): void {}
 
-    public function tryCreateTransactionWithTargetWalletFromAnotherUser(): void
-    {
-    }
+    public function tryCreateTransactionWithTargetWalletFromAnotherUser(): void {}
 
-    public function tryCreateTransactionWithCategoryFromAnotherUser(): void
-    {
-    }
+    public function tryCreateTransactionWithCategoryFromAnotherUser(): void {}
 }

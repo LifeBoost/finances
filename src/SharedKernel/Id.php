@@ -8,9 +8,7 @@ use Ramsey\Uuid\Uuid;
 
 class Id
 {
-    public function __construct(private readonly string $id)
-    {
-    }
+    public function __construct(private readonly string $id) {}
 
     public static function generate(): static
     {

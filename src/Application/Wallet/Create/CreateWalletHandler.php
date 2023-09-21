@@ -17,8 +17,7 @@ final readonly class CreateWalletHandler implements CommandHandlerInterface
     public function __construct(
         private WalletRepository $repository,
         private UserContext $userContext,
-    ) {
-    }
+    ) {}
 
     /**
      * @throws DomainException

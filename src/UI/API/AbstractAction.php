@@ -6,6 +6,4 @@ namespace App\UI\API;
 
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 
-abstract class AbstractAction extends AbstractController
-{
-}
+abstract class AbstractAction extends AbstractController {}

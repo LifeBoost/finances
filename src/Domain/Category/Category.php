@@ -26,8 +26,7 @@ class Category
         private string $name,
         #[ORM\Column()]
         private string $icon,
-    ) {
-    }
+    ) {}
 
     public static function create(
         CategoryType $type,

@@ -27,8 +27,7 @@ final class TransactionController extends AbstractController
 {
     public function __construct(
         private readonly MessageBusInterface $bus,
-    ) {
-    }
+    ) {}
 
     #[Route('', name: 'create', methods: ['POST'])]
     public function create(#[MapRequestPayload] CreateTransactionRequest $request): Response
@@ -48,7 +47,9 @@ final class TransactionController extends AbstractController
             )->last(HandledStamp::class)
             ?->getResult();
 
-        return new JsonResponse(['id' => $id->toString()], Response::HTTP_CREATED);
+        return new JsonResponse([
+            'id' => $id->toString(),
+        ], Response::HTTP_CREATED);
     }
 
     #[Route('/{id}', name: 'delete', methods: ['DELETE'])]

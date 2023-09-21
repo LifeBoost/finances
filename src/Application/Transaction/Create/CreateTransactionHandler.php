@@ -23,8 +23,7 @@ final readonly class CreateTransactionHandler implements CommandHandlerInterface
         private WalletRepository $walletRepository,
         private CategoryRepository $categoryRepository,
         private UserContext $userContext,
-    ) {
-    }
+    ) {}
 
     /**
      * @throws DomainException

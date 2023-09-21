@@ -39,11 +39,7 @@ final class GetOneByIdTransactionTest extends BaseTestCase
         self::assertEquals($transaction['id'], $responseData['id']);
     }
 
-    public function tryGetTransactionFromAnotherUser(): void
-    {
-    }
+    public function tryGetTransactionFromAnotherUser(): void {}
 
-    public function tryGetNotFoundTransaction(): void
-    {
-    }
+    public function tryGetNotFoundTransaction(): void {}
 }

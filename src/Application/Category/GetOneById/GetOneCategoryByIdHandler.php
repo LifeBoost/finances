@@ -15,10 +15,9 @@ use Symfony\Component\Messenger\Attribute\AsMessageHandler;
 final readonly class GetOneCategoryByIdHandler implements QueryHandlerInterface
 {
     public function __construct(
-        private Connection  $connection,
+        private Connection $connection,
         private UserContext $userContext,
-    ) {
-    }
+    ) {}
 
     /**
      * @throws Exception

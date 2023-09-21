@@ -20,8 +20,7 @@ final readonly class UpdateTransactionHandler implements CommandHandlerInterface
         private TransactionRepository $repository,
         private WalletRepository $walletRepository,
         private CategoryRepository $categoryRepository,
-    ) {
-    }
+    ) {}
 
     /**
      * @throws NotFoundException

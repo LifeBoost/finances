@@ -14,8 +14,7 @@ final class GetAllWalletsHandler implements QueryHandlerInterface
     public function __construct(
         private readonly Connection $connection,
         private readonly UserContext $userContext,
-    ) {
-    }
+    ) {}
 
     /**
      * @throws Exception
