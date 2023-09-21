@@ -4,14 +4,14 @@ declare(strict_types=1);
 
 namespace App\Application\Wallet\Delete;
 
-use App\Domain\Wallet\WalletId;
 use App\Domain\Wallet\WalletRepository;
 use App\SharedKernel\Exception\NotFoundException;
+use App\SharedKernel\Id;
 use App\SharedKernel\Messenger\CommandHandlerInterface;
 
-final class DeleteWalletHandler implements CommandHandlerInterface
+final readonly class DeleteWalletHandler implements CommandHandlerInterface
 {
-    public function __construct(private readonly WalletRepository $repository)
+    public function __construct(private WalletRepository $repository)
     {
     }
 
@@ -20,6 +20,6 @@ final class DeleteWalletHandler implements CommandHandlerInterface
      */
     public function __invoke(DeleteWalletCommand $command): void
     {
-        $this->repository->delete(WalletId::fromString($command->id));
+        $this->repository->delete(Id::fromString($command->id));
     }
 }

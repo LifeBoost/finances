@@ -6,7 +6,7 @@ namespace App\SharedKernel;
 
 use Ramsey\Uuid\Uuid;
 
-abstract class Id
+class Id
 {
     public function __construct(private readonly string $id)
     {

@@ -1,7 +1,8 @@
 doctrine:
     dbal:
         types:
-            uuid: 'Ramsey\Uuid\Doctrine\UuidType'
+            uuid: 'App\Infrastructure\Persistence\Doctrine\DoctrineIdType'
+            uuid_user: 'App\Infrastructure\Persistence\Doctrine\DoctrineUserIdType'
         default_connection: default
         connections:
             default:

@@ -11,7 +11,7 @@ use App\Application\Wallet\GetAll\WalletsCollection;
 use App\Application\Wallet\GetOneById\GetOneWalletByIdQuery;
 use App\Application\Wallet\GetOneById\WalletDTO;
 use App\Application\Wallet\Update\UpdateWalletCommand;
-use App\Domain\Wallet\WalletId;
+use App\SharedKernel\Id;
 use App\UI\API\Request\Wallet\CreateWalletRequest;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\JsonResponse;
@@ -33,7 +33,7 @@ final class WalletController extends AbstractController
     #[Route('', name: 'create', methods: ['POST'])]
     public function create(#[MapRequestPayload] CreateWalletRequest $request): Response
     {
-        /** @var WalletId $id */
+        /** @var Id $id */
         $id = $this->commandBus
             ->dispatch(
                 new CreateWalletCommand(

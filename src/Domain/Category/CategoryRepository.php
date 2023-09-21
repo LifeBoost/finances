@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace App\Domain\Category;
 
 use App\SharedKernel\Exception\NotFoundException;
+use App\SharedKernel\Id;
 
 interface CategoryRepository
 {
@@ -15,12 +16,12 @@ interface CategoryRepository
     /**
      * @throws NotFoundException
      */
-    public function getById(CategoryId $id): Category;
+    public function getById(Id $id): Category;
 
     public function save(Category $category): void;
 
     /**
      * @throws NotFoundException
      */
-    public function delete(CategoryId $id): void;
+    public function delete(Id $id): void;
 }

@@ -4,19 +4,22 @@ declare(strict_types=1);
 
 namespace App\Domain\Category;
 
-use App\SharedKernel\Entity;
+use App\Domain\User\UserContext;
+use App\Domain\User\UserId;
+use App\SharedKernel\Id;
 use Doctrine\ORM\Mapping as ORM;
-use Ramsey\Uuid\Uuid;
-use Ramsey\Uuid\UuidInterface;
 
 #[ORM\Entity(repositoryClass: CategoryRepository::class)]
 #[ORM\Table(name: 'categories')]
-class Category extends Entity
+#[ORM\UniqueConstraint(name: 'categories_name_type_unique_index', columns: ['type', 'name', 'user_id'])]
+class Category
 {
     public function __construct(
         #[ORM\Id]
         #[ORM\Column(type: 'uuid', unique: true)]
-        private UuidInterface $id,
+        private Id $id,
+        #[ORM\Column(type: 'uuid_user')]
+        private readonly UserId $userId,
         #[ORM\Column()]
         private string $type,
         #[ORM\Column()]
@@ -30,9 +33,11 @@ class Category extends Entity
         CategoryType $type,
         string $name,
         string $icon,
+        UserContext $userContext,
     ): self {
         return new self(
-            Uuid::uuid4(),
+            Id::generate(),
+            $userContext->getUserId(),
             $type->value,
             $name,
             $icon,
@@ -49,9 +54,14 @@ class Category extends Entity
         $this->icon = $icon;
     }
 
-    public function getId(): UuidInterface
+    public function getId(): Id
     {
         return $this->id;
+    }
+
+    public function getUserId(): UserId
+    {
+        return $this->userId;
     }
 
     public function getType(): string

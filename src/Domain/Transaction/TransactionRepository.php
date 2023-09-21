@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace App\Domain\Transaction;
 
 use App\SharedKernel\Exception\NotFoundException;
+use App\SharedKernel\Id;
 
 interface TransactionRepository
 {
@@ -13,12 +14,12 @@ interface TransactionRepository
     /**
      * @throws NotFoundException
      */
-    public function getById(TransactionId $id): Transaction;
+    public function getById(Id $id): Transaction;
 
     public function save(Transaction $transaction): void;
 
     /**
      * @throws NotFoundException
      */
-    public function delete(TransactionId $id): void;
+    public function delete(Id $id): void;
 }
