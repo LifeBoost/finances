@@ -56,31 +56,17 @@ final class UpdateTransactionTest extends BaseTestCase
         self::assertEquals($newDescription, $transaction['description']);
     }
 
-    public function tryUpdateTransactionWithInvalidType(): void
-    {
-    }
+    public function tryUpdateTransactionWithInvalidType(): void {}
 
-    public function tryUpdateExpenseTransactionWithTargetWallet(): void
-    {
-    }
+    public function tryUpdateExpenseTransactionWithTargetWallet(): void {}
 
-    public function tryUpdateTransferTransactionWithCategory(): void
-    {
-    }
+    public function tryUpdateTransferTransactionWithCategory(): void {}
 
-    public function tryUpdateTransactionWithZeroAmount(): void
-    {
-    }
+    public function tryUpdateTransactionWithZeroAmount(): void {}
 
-    public function tryUpdateTransactionWithSourceWalletFromAnotherUser(): void
-    {
-    }
+    public function tryUpdateTransactionWithSourceWalletFromAnotherUser(): void {}
 
-    public function tryUpdateTransferTransactionWithTargetWalletFromAnotherUser(): void
-    {
-    }
+    public function tryUpdateTransferTransactionWithTargetWalletFromAnotherUser(): void {}
 
-    public function tryUpdateExpenseTransactionWithCategoryFromAnotherUser(): void
-    {
-    }
+    public function tryUpdateExpenseTransactionWithCategoryFromAnotherUser(): void {}
 }

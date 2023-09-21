@@ -11,7 +11,7 @@ use App\Application\Category\GetAll\GetAllCategoriesQuery;
 use App\Application\Category\GetOneById\CategoryDTO;
 use App\Application\Category\GetOneById\GetOneCategoryByIdQuery;
 use App\Application\Category\Update\UpdateCategoryCommand;
-use App\Domain\Category\CategoryId;
+use App\SharedKernel\Id;
 use App\UI\API\Request\Category\CreateCategoryRequest;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\JsonResponse;
@@ -27,13 +27,12 @@ final class CategoryController extends AbstractController
 {
     public function __construct(
         private readonly MessageBusInterface $bus,
-    ) {
-    }
+    ) {}
 
     #[Route('', name: 'create', methods: ['POST'])]
     public function create(#[MapRequestPayload] CreateCategoryRequest $request): Response
     {
-        /** @var CategoryId $id */
+        /** @var Id $id */
         $id = $this->bus
             ->dispatch(
                 new CreateCategoryCommand(

@@ -11,7 +11,7 @@ use App\Application\Transaction\GetAll\TransactionDTO;
 use App\Application\Transaction\GetAll\TransactionsCollection;
 use App\Application\Transaction\GetOneById\GetOneTransactionByIdQuery;
 use App\Application\Transaction\Update\UpdateTransactionCommand;
-use App\Domain\Transaction\TransactionId;
+use App\SharedKernel\Id;
 use App\UI\API\Request\Transaction\CreateTransactionRequest;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\JsonResponse;
@@ -27,13 +27,12 @@ final class TransactionController extends AbstractController
 {
     public function __construct(
         private readonly MessageBusInterface $bus,
-    ) {
-    }
+    ) {}
 
     #[Route('', name: 'create', methods: ['POST'])]
     public function create(#[MapRequestPayload] CreateTransactionRequest $request): Response
     {
-        /** @var TransactionId $id */
+        /** @var Id $id */
         $id = $this->bus
             ->dispatch(
                 new CreateTransactionCommand(
@@ -48,7 +47,9 @@ final class TransactionController extends AbstractController
             )->last(HandledStamp::class)
             ?->getResult();
 
-        return new JsonResponse(['id' => $id->toString()], Response::HTTP_CREATED);
+        return new JsonResponse([
+            'id' => $id->toString(),
+        ], Response::HTTP_CREATED);
     }
 
     #[Route('/{id}', name: 'delete', methods: ['DELETE'])]

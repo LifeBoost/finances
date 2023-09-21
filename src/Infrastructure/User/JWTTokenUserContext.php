@@ -19,8 +19,7 @@ final class JWTTokenUserContext implements UserContext
         private readonly string $jwtSecretKey,
         private readonly string $jwtAlgorithm,
         private readonly RequestStack $requestStack
-    ) {
-    }
+    ) {}
 
     public function getUserId(): UserId
     {

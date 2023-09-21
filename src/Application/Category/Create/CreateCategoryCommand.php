@@ -10,6 +10,5 @@ final readonly class CreateCategoryCommand
         public string $type,
         public string $name,
         public string $icon,
-    ) {
-    }
+    ) {}
 }

@@ -15,9 +15,8 @@ final readonly class GetAllCategoriesHandler implements QueryHandlerInterface
 {
     public function __construct(
         private UserContext $userContext,
-        private Connection  $connection,
-    ) {
-    }
+        private Connection $connection,
+    ) {}
 
     /**
      * @throws Exception

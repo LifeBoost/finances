@@ -5,17 +5,17 @@ declare(strict_types=1);
 namespace App\Domain\Transaction;
 
 use App\Domain\Category\Category;
+use App\Domain\User\UserContext;
+use App\Domain\User\UserId;
 use App\Domain\Wallet\Wallet;
-use App\SharedKernel\Entity;
 use App\SharedKernel\Exception\DomainException;
+use App\SharedKernel\Id;
 use DateTimeImmutable;
 use Doctrine\ORM\Mapping as ORM;
-use Ramsey\Uuid\Uuid;
-use Ramsey\Uuid\UuidInterface;
 
 #[ORM\Entity(repositoryClass: TransactionRepository::class)]
 #[ORM\Table(name: 'transactions')]
-class Transaction extends Entity
+class Transaction
 {
     /**
      * @throws DomainException
@@ -23,7 +23,9 @@ class Transaction extends Entity
     public function __construct(
         #[ORM\Id]
         #[ORM\Column(type: 'uuid', unique: true)]
-        private UuidInterface $id,
+        private Id $id,
+        #[ORM\Column(type: 'uuid_user')]
+        private readonly UserId $userId,
         #[ORM\Column]
         private string $type,
         #[ORM\ManyToOne(targetEntity: Wallet::class)]
@@ -59,10 +61,12 @@ class Transaction extends Entity
         ?Category $category,
         DateTimeImmutable $date,
         string $description,
-        int $amount
+        int $amount,
+        UserContext $userContext,
     ): self {
         return new self(
-            Uuid::uuid4(),
+            Id::generate(),
+            $userContext->getUserId(),
             $type->value,
             $sourceWallet,
             $targetWallet,
@@ -110,9 +114,14 @@ class Transaction extends Entity
         }
     }
 
-    public function getId(): UuidInterface
+    public function getId(): Id
     {
         return $this->id;
+    }
+
+    public function getUserId(): UserId
+    {
+        return $this->userId;
     }
 
     public function getType(): TransactionType

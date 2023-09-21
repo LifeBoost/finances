@@ -11,6 +11,5 @@ final class WalletDTO
         public readonly string $name,
         public readonly int $startBalance,
         public readonly string $currency,
-    ) {
-    }
+    ) {}
 }

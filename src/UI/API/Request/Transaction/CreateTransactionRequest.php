@@ -14,6 +14,5 @@ final readonly class CreateTransactionRequest
         public string $date,
         public string $description,
         public int $amount,
-    ) {
-    }
+    ) {}
 }

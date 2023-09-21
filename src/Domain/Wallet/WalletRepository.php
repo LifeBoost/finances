@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace App\Domain\Wallet;
 
 use App\SharedKernel\Exception\NotFoundException;
+use App\SharedKernel\Id;
 
 interface WalletRepository
 {
@@ -15,12 +16,12 @@ interface WalletRepository
     /**
      * @throws NotFoundException
      */
-    public function getById(WalletId $id): Wallet;
+    public function getById(Id $id): Wallet;
 
     public function save(Wallet $wallet): void;
 
     /**
      * @throws NotFoundException
      */
-    public function delete(WalletId $id): void;
+    public function delete(Id $id): void;
 }

@@ -6,7 +6,5 @@ namespace App\Application\Transaction\GetOneById;
 
 final class GetOneTransactionByIdQuery
 {
-    public function __construct(public readonly string $id)
-    {
-    }
+    public function __construct(public readonly string $id) {}
 }

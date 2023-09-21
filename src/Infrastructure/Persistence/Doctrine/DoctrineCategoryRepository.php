@@ -2,58 +2,57 @@
 
 declare(strict_types=1);
 
-namespace App\Infrastructure\Wallet;
+namespace App\Infrastructure\Persistence\Doctrine;
 
+use App\Domain\Category\Category;
+use App\Domain\Category\CategoryRepository;
+use App\Domain\Category\CategoryType;
 use App\Domain\User\UserContext;
-use App\Domain\Wallet\Wallet;
-use App\Domain\Wallet\WalletId;
-use App\Domain\Wallet\WalletRepository;
 use App\SharedKernel\Exception\NotFoundException;
+use App\SharedKernel\Id;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\Persistence\ManagerRegistry;
-use Throwable;
 
-final class DoctrineWalletRepository extends ServiceEntityRepository implements WalletRepository
+final class DoctrineCategoryRepository extends ServiceEntityRepository implements CategoryRepository
 {
     public function __construct(ManagerRegistry $registry, private readonly UserContext $userContext)
     {
-        parent::__construct($registry, Wallet::class);
+        parent::__construct($registry, Category::class);
     }
 
-    /**
-     * @throws Throwable
-     */
-    public function store(Wallet $wallet): void
+    public function store(Category $category): void
     {
-        $this->getEntityManager()->persist($wallet);
+        $this->getEntityManager()->persist($category);
         $this->getEntityManager()->flush();
     }
 
-    public function existsByName(string $name): bool
+    public function existsByName(string $name, CategoryType $type): bool
     {
         return $this->findOneBy([
             'name' => $name,
+            'type' => $type->value,
             'userId' => $this->userContext->getUserId()->toString(),
         ]) !== null;
     }
 
-    public function getById(WalletId $id): Wallet
+    public function getById(Id $id): Category
     {
         return $this->findOneBy([
             'id' => $id->toString(),
             'userId' => $this->userContext->getUserId()->toString(),
-        ]) ?? throw new NotFoundException('Wallet with given ID not found');
+        ]) ?? throw new NotFoundException('Category with given ID not found');
     }
 
-    public function save(Wallet $wallet): void
+    public function save(Category $category): void
     {
         $this->getEntityManager()->flush();
     }
 
-    public function delete(WalletId $id): void
+    public function delete(Id $id): void
     {
         $this->getEntityManager()->remove(
             $this->getById($id)
         );
+        $this->getEntityManager()->flush();
     }
 }

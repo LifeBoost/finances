@@ -10,6 +10,5 @@ final class CreateWalletCommand
         public readonly string $name,
         public readonly int $startBalance,
         public readonly string $currency,
-    ) {
-    }
+    ) {}
 }

@@ -40,7 +40,7 @@ final class ErrorHandlerMiddleware implements EventSubscriberInterface
                     'errors' => array_map(
                         static fn (ConstraintViolation $violation) => [
                             'propertyPath' => $violation->getPropertyPath(),
-                            'message' => $violation->getMessage()
+                            'message' => $violation->getMessage(),
                         ],
                         $exception->getViolations()->getIterator()->getArrayCopy()
                     ),
@@ -57,8 +57,10 @@ final class ErrorHandlerMiddleware implements EventSubscriberInterface
                 $event->setResponse(
                     new JsonResponse([
                         'errors' => [
-                            ['message' => $exception->getMessage()]
-                        ]
+                            [
+                                'message' => $exception->getMessage(),
+                            ],
+                        ],
                     ], Response::HTTP_CONFLICT)
                 );
 
@@ -69,8 +71,10 @@ final class ErrorHandlerMiddleware implements EventSubscriberInterface
                 $event->setResponse(
                     new JsonResponse([
                         'errors' => [
-                            ['message' => $exception->getMessage()]
-                        ]
+                            [
+                                'message' => $exception->getMessage(),
+                            ],
+                        ],
                     ], Response::HTTP_NOT_FOUND)
                 );
 

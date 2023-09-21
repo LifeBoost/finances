@@ -4,6 +4,4 @@ declare(strict_types=1);
 
 namespace App\Application\Wallet\GetAll;
 
-final class GetAllWalletsQuery
-{
-}
+final class GetAllWalletsQuery {}

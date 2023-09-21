@@ -139,7 +139,6 @@ final class CreateCategoryTest extends BaseTestCase
 
         $responseData = $this->parseJson($response->getContent());
 
-
         self::assertTrue(Uuid::isValid($responseData['id']));
     }
 }

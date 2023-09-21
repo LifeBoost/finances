@@ -6,6 +6,4 @@ namespace App\SharedKernel\Exception;
 
 use Exception;
 
-final class NotFoundException extends Exception
-{
-}
+final class NotFoundException extends Exception {}

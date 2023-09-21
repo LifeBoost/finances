@@ -23,6 +23,5 @@ final readonly class CreateWalletRequest
             Currency::USD->value,
         ])]
         public string $currency,
-    ) {
-    }
+    ) {}
 }

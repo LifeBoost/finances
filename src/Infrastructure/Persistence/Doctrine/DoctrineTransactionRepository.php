@@ -2,13 +2,13 @@
 
 declare(strict_types=1);
 
-namespace App\Infrastructure\Transaction;
+namespace App\Infrastructure\Persistence\Doctrine;
 
 use App\Domain\Transaction\Transaction;
-use App\Domain\Transaction\TransactionId;
 use App\Domain\Transaction\TransactionRepository;
 use App\Domain\User\UserContext;
 use App\SharedKernel\Exception\NotFoundException;
+use App\SharedKernel\Id;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\Persistence\ManagerRegistry;
 
@@ -25,7 +25,7 @@ final class DoctrineTransactionRepository extends ServiceEntityRepository implem
         $this->getEntityManager()->flush();
     }
 
-    public function getById(TransactionId $id): Transaction
+    public function getById(Id $id): Transaction
     {
         return $this->findOneBy([
             'id' => $id->toString(),
@@ -38,7 +38,7 @@ final class DoctrineTransactionRepository extends ServiceEntityRepository implem
         $this->getEntityManager()->flush();
     }
 
-    public function delete(TransactionId $id): void
+    public function delete(Id $id): void
     {
         $this->getEntityManager()->remove(
             $this->getById($id)
