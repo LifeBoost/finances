@@ -25,6 +25,23 @@ use PhpCsFixer\Fixer\Strict\DeclareStrictTypesFixer;
 use PhpCsFixer\Fixer\StringNotation\SingleQuoteFixer;
 use PhpCsFixer\Fixer\Whitespace\NoExtraBlankLinesFixer;
 use PhpCsFixer\Fixer\Whitespace\TypeDeclarationSpacesFixer;
+use PhpCsFixerCustomFixers\Fixer\MultilineCommentOpeningClosingAloneFixer;
+use PhpCsFixerCustomFixers\Fixer\NoCommentedOutCodeFixer;
+use PhpCsFixerCustomFixers\Fixer\NoDuplicatedArrayKeyFixer;
+use PhpCsFixerCustomFixers\Fixer\NoDuplicatedImportsFixer;
+use PhpCsFixerCustomFixers\Fixer\NoPhpStormGeneratedCommentFixer;
+use PhpCsFixerCustomFixers\Fixer\NoTrailingCommaInSinglelineFixer;
+use PhpCsFixerCustomFixers\Fixer\NoUselessDirnameCallFixer;
+use PhpCsFixerCustomFixers\Fixer\NoUselessParenthesisFixer;
+use PhpCsFixerCustomFixers\Fixer\PhpdocNoSuperfluousParamFixer;
+use PhpCsFixerCustomFixers\Fixer\PhpdocParamOrderFixer;
+use PhpCsFixerCustomFixers\Fixer\PhpdocSingleLineVarFixer;
+use PhpCsFixerCustomFixers\Fixer\PhpdocTypesCommaSpacesFixer;
+use PhpCsFixerCustomFixers\Fixer\PhpdocTypesTrimFixer;
+use PhpCsFixerCustomFixers\Fixer\PhpUnitAssertArgumentsOrderFixer;
+use PhpCsFixerCustomFixers\Fixer\PhpUnitDedicatedAssertFixer;
+use PhpCsFixerCustomFixers\Fixer\SingleSpaceAfterStatementFixer;
+use PhpCsFixerCustomFixers\Fixer\SingleSpaceBeforeStatementFixer;
 use Symplify\CodingStandard\Fixer\Commenting\ParamReturnAndVarTagMalformsFixer;
 use Symplify\EasyCodingStandard\Config\ECSConfig;
 use Symplify\EasyCodingStandard\ValueObject\Set\SetList;
@@ -67,6 +84,23 @@ return static function (ECSConfig $ecsConfig): void {
         SingleQuoteFixer::class,
         NoUnusedImportsFixer::class,
         NoEmptyPhpdocFixer::class,
+        MultilineCommentOpeningClosingAloneFixer::class,
+        NoCommentedOutCodeFixer::class,
+        NoDuplicatedArrayKeyFixer::class,
+        NoDuplicatedImportsFixer::class,
+        NoPhpStormGeneratedCommentFixer::class,
+        NoTrailingCommaInSinglelineFixer::class,
+        NoUselessDirnameCallFixer::class,
+        NoUselessParenthesisFixer::class,
+        PhpdocNoSuperfluousParamFixer::class,
+        PhpdocParamOrderFixer::class,
+        PhpdocSingleLineVarFixer::class,
+        PhpdocTypesCommaSpacesFixer::class,
+        PhpdocTypesTrimFixer::class,
+        PhpUnitAssertArgumentsOrderFixer::class,
+        PhpUnitDedicatedAssertFixer::class,
+        SingleSpaceAfterStatementFixer::class,
+        SingleSpaceBeforeStatementFixer::class,
     ]);
 
     $ecsConfig->ruleWithConfiguration(ClassDefinitionFixer::class, [
