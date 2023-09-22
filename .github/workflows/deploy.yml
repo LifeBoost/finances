@@ -1,0 +1,50 @@
+name: Build production images and deploy
+
+on:
+  push:
+    tags:
+      - 'v[0-9]+.[0-9]+.[0-9]+'
+
+env:
+  APP_IMAGE_TARGET: app
+  APP_IMAGE_NAME: app-production
+
+  WEB_IMAGE_TARGET: web
+  WEB_IMAGE_NAME: web-production
+
+jobs:
+  build-app:
+    name: Build APP image
+    runs-on: self-hosted
+    steps:
+      - uses: actions/checkout@v4
+      - name: Build app image
+        run: docker build . --file Dockerfile --target $APP_IMAGE_TARGET --tag $APP_IMAGE_NAME --label "runnumber=${GITHUB_RUN_ID}"
+      - name: Build web image
+        run: docker build . --file Dockerfile --target $WEB_IMAGE_TARGET --tag $WEB_IMAGE_NAME --label "runnumber=${GITHUB_RUN_ID}"
+      - name: Log in to registry
+        run: echo "${{ secrets.GITHUB_TOKEN }}" | docker login ghcr.io -u $ --password-stdin
+      - name: Push images
+        run: |
+          APP_IMAGE_ID=ghcr.io/lifeboost/finances/$APP_IMAGE_NAME
+          APP_IMAGE_ID=$(echo $APP_IMAGE_ID | tr '[A-Z]' '[a-z]')
+          
+          WEB_IMAGE_ID=ghcr.io/lifeboost/finances/$WEB_IMAGE_NAME
+          WEB_IMAGE_ID=$(echo $WEB_IMAGE_ID | tr '[A-Z]' '[a-z]')
+          
+          VERSION=$(echo "${{ github.ref }}" | sed -e 's,.*/\(.*\),\1,')
+          [[ "${{ github.ref }}" == "refs/tags/"* ]] && VERSION=$(echo $VERSION | sed -e 's/^v//')
+          
+          echo "Push ${VERSION} image"
+          echo IMAGE_ID=$APP_IMAGE_ID
+          echo VERSION=$VERSION
+          docker tag $APP_IMAGE_NAME $APP_IMAGE_ID:$VERSION
+          docker push $APP_IMAGE_ID:$VERSION
+          docker tag $WEB_IMAGE_NAME $WEB_IMAGE_ID:$VERSION
+          docker push $WEB_IMAGE_ID:$VERSION
+    
+          echo "Push latest image"
+          docker tag $APP_IMAGE_NAME $APP_IMAGE_ID:latest
+          docker push $APP_IMAGE_ID:latest
+          docker tag $WEB_IMAGE_NAME $WEB_IMAGE_ID:latest
+          docker push $APP_IMAGE_ID:latest
