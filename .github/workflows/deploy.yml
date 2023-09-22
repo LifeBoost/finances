@@ -48,4 +48,4 @@ jobs:
           docker tag $APP_IMAGE_NAME $APP_IMAGE_ID:latest
           docker push $APP_IMAGE_ID:latest
           docker tag $WEB_IMAGE_NAME $WEB_IMAGE_ID:latest
-          docker push $APP_IMAGE_ID:latest
+          docker push $WEB_IMAGE_ID:latest
