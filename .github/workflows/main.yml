@@ -64,10 +64,10 @@ jobs:
           tar -xf /tmp/artifacts/$artifactName -C /app
       - name: Run csfixer
         run: composer cs:check
-  integration-tests:
-    name: Integration tests
+  database-schema-validation:
+    name: Database Schema Validation
     runs-on: self-hosted
-    needs: [build, phpstan, csfixer]
+    needs: build
     container:
       image: feejkr/lb-finances:latest
       volumes:
@@ -92,5 +92,33 @@ jobs:
           tar -xf /tmp/artifacts/$artifactName -C /app
       - name: Run migrations
         run: php bin/console doctrine:migrations:migrate -n
+      - name: Run schema validation
+        run: php bin/console doctrine:schema:validate
+  integration-tests:
+    name: Integration tests
+    runs-on: self-hosted
+    needs: [build, phpstan, csfixer, database-schema-validation]
+    container:
+      image: feejkr/lb-finances:latest
+      volumes:
+        - ./:/app
+    services:
+      db:
+        image: mysql:8
+        env:
+          MYSQL_DATABASE: finances
+          MYSQL_ROOT_PASSWORD: finances
+        ports:
+          - 3306:3306
+        options: --health-cmd="mysqladmin ping" --health-interval=10s --health-timeout=5s --health-retries=3
+    steps:
+      - name: Download artifact
+        uses: actions/download-artifact@v2
+        with:
+          name: project-artifact
+          path: /tmp/artifacts
+      - name: Unpack artifact
+        run: |
+          tar -xf /tmp/artifacts/$artifactName -C /app
       - name: Run integration tests
         run: composer phpunit:integration
