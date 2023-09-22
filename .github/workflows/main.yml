@@ -1,6 +1,11 @@
 name: Main actions
 
-on: [push]
+on:
+  push:
+    branches-ignore:
+      - master
+    tags-ignore:
+      - '**'
 
 env:
   artifactName: ${{ github.sha }}.tar.gz
