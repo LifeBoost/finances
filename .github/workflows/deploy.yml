@@ -55,6 +55,8 @@ jobs:
     environment: 'prod'
     needs: [build]
     steps:
+      - name: Log in to registry
+        run: echo "${{ secrets.GITHUB_TOKEN }}" | docker login ghcr.io -u $ --password-stdin
       - name: Deploy app via SSH
         uses: appleboy/ssh-action@v1.0.0
         with:
