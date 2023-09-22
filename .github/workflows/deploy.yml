@@ -49,14 +49,14 @@ jobs:
           docker push $APP_IMAGE_ID:latest
           docker tag $WEB_IMAGE_NAME $WEB_IMAGE_ID:latest
           docker push $WEB_IMAGE_ID:latest
+      - name: Docker logout
+        run: docker logout ghcr.io
   deploy:
     name: Deploy app
     runs-on: self-hosted
     environment: 'prod'
     needs: [build]
     steps:
-      - name: Log in to registry
-        run: echo "${{ secrets.GITHUB_TOKEN }}" | docker login ghcr.io -u $ --password-stdin
       - name: Deploy app via SSH
         uses: appleboy/ssh-action@v1.0.0
         with:
