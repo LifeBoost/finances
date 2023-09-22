@@ -13,8 +13,8 @@ env:
   WEB_IMAGE_NAME: web-production
 
 jobs:
-  build-app:
-    name: Build APP image
+  build:
+    name: Build images
     runs-on: self-hosted
     permissions: write-all
     steps:
@@ -49,3 +49,19 @@ jobs:
           docker push $APP_IMAGE_ID:latest
           docker tag $WEB_IMAGE_NAME $WEB_IMAGE_ID:latest
           docker push $WEB_IMAGE_ID:latest
+  deploy:
+    name: Deploy app
+    runs-on: self-hosted
+    environment: 'prod'
+    needs: [build]
+    steps:
+      - name: Deploy app via SSH
+        uses: appleboy/ssh-action@v1.0.0
+        with:
+          host: ${{ secrets.SSH_HOST }}
+          username: ${{ secrets.SSH_USERNAME }}
+          key: ${{ secrets.SSH_KEY }}
+          port: ${{ secrets.SSH_PORT }}
+          script: |
+            cd ${{ secrets.APP_PATH }}
+            sh deploy.sh
