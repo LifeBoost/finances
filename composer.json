@@ -74,7 +74,7 @@
         "phpstan:baseline": "phpstan analyse -cphpstan.neon --generate-baseline phpstan-baseline.php",
         "cs:check": "ecs check",
         "cs:fix": "ecs check --fix",
-        "phpunit:integration": "phpunit --testsuite=Integration"
+        "phpunit:integration": "APP_ENV=\"test\"; phpunit --testsuite=Integration"
     },
     "conflict": {
         "symfony/symfony": "*"

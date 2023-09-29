@@ -34,6 +34,8 @@ services:
         protocol: udp
     extra_hosts:
       - "host.docker.internal:host-gateway"
+    depends_on:
+      - db
 
   db:
     image: mysql:8
