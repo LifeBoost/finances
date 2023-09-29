@@ -24,7 +24,7 @@ jobs:
         run: |
           composer install
           mkdir -p /tmp/artifacts
-          tar czf /tmp/artifacts/$artifactName ${{ github.workspace }}/
+          tar -czf /tmp/artifacts/$artifactName ${{ github.workspace }}/
       - name: Save artifact
         uses: actions/upload-artifact@v3
         with:
