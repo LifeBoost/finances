@@ -44,6 +44,7 @@ jobs:
         uses: actions/download-artifact@v3
         with:
           name: project-artifact
+          path: /tmp/artifacts/$artifactName
       - name: Unpack artifact
         run: |
           tar -xf /tmp/artifacts/$artifactName -C /
@@ -62,6 +63,7 @@ jobs:
         uses: actions/download-artifact@v3
         with:
           name: project-artifact
+          path: /tmp/artifacts/$artifactName
       - name: Unpack artifact
         run: |
           tar -xf /tmp/artifacts/$artifactName -C /
@@ -89,6 +91,7 @@ jobs:
         uses: actions/download-artifact@v3
         with:
           name: project-artifact
+          path: /tmp/artifacts/$artifactName
       - name: Unpack artifact
         run: |
           tar -xf /tmp/artifacts/$artifactName -C /
@@ -118,6 +121,7 @@ jobs:
         uses: actions/download-artifact@v3
         with:
           name: project-artifact
+          path: /tmp/artifacts/$artifactName
       - name: Unpack artifact
         run: |
           tar -xf /tmp/artifacts/$artifactName -C /
