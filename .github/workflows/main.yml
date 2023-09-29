@@ -25,7 +25,8 @@ jobs:
         run: |
           composer install
           mkdir -p $artifactPath
-          tar -czf $artifactPath/$artifactName /app/
+          tar -czf $artifactPath/$artifactName /app
+          ls -l $artifactPath
       - name: Save artifact
         uses: actions/upload-artifact@v3
         with:
