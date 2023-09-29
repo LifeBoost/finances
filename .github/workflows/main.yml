@@ -24,12 +24,12 @@ jobs:
         run: |
           composer install
           mkdir -p /tmp/artifacts
-          tar czf /tmp/artifacts/$artifactName /app
+          tar czf /tmp/artifacts/$artifactName ${{ github.workspace }}/
       - name: Save artifact
-        uses: actions/upload-artifact@v2
+        uses: actions/upload-artifact@v3
         with:
           name: project-artifact
-          path: /tmp/artifacts
+          path: /tmp/artifacts/$artifactName
           retention-days: 1
   phpstan:
     name: PHPStan
@@ -41,13 +41,12 @@ jobs:
         - ./:/app
     steps:
       - name: Download artifact
-        uses: actions/download-artifact@v2
+        uses: actions/download-artifact@v3
         with:
           name: project-artifact
-          path: /tmp/artifacts
       - name: Unpack artifact
         run: |
-          tar -xf /tmp/artifacts/$artifactName -C /app
+          tar -xf /tmp/artifacts/$artifactName -C ${{ github.workspace }}
       - name: Run phpstan
         run: composer phpstan:check
   csfixer:
@@ -60,13 +59,12 @@ jobs:
         - ./:/app
     steps:
       - name: Download artifact
-        uses: actions/download-artifact@v2
+        uses: actions/download-artifact@v3
         with:
           name: project-artifact
-          path: /tmp/artifacts
       - name: Unpack artifact
         run: |
-          tar -xf /tmp/artifacts/$artifactName -C /app
+          tar -xf /tmp/artifacts/$artifactName -C ${{ github.workspace }}
       - name: Run csfixer
         run: composer cs:check
   database-schema-validation:
@@ -88,13 +86,12 @@ jobs:
         options: --health-cmd="mysqladmin ping" --health-interval=10s --health-timeout=5s --health-retries=3
     steps:
       - name: Download artifact
-        uses: actions/download-artifact@v2
+        uses: actions/download-artifact@v3
         with:
           name: project-artifact
-          path: /tmp/artifacts
       - name: Unpack artifact
         run: |
-          tar -xf /tmp/artifacts/$artifactName -C /app
+          tar -xf /tmp/artifacts/$artifactName -C ${{ github.workspace }}
       - name: Run migrations
         run: php bin/console doctrine:migrations:migrate -n
       - name: Run schema validation
@@ -118,12 +115,11 @@ jobs:
         options: --health-cmd="mysqladmin ping" --health-interval=10s --health-timeout=5s --health-retries=3
     steps:
       - name: Download artifact
-        uses: actions/download-artifact@v2
+        uses: actions/download-artifact@v3
         with:
           name: project-artifact
-          path: /tmp/artifacts
       - name: Unpack artifact
         run: |
-          tar -xf /tmp/artifacts/$artifactName -C /app
+          tar -xf /tmp/artifacts/$artifactName -C ${{ github.workspace }}
       - name: Run integration tests
         run: composer phpunit:integration
