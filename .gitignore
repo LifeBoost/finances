@@ -29,3 +29,8 @@
 ###< friendsofphp/php-cs-fixer ###
 docker-compose.override.yml
 docker-compose.prod.yml
+
+###> caddy server files ###
+cachegrind*
+gcstats*
+trace*

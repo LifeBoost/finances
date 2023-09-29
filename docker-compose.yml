@@ -2,28 +2,38 @@ version: '3.7'
 
 services:
   app:
-    image: ghcr.io/lifeboost/php-development:8.2
-    environment:
-      COMPOSER_AUTH: "{}"
-      APP_BASE_DIR: ${APP_BASE_DIR-.}
+    build:
+      context: .
+      target: app-dev
     restart: unless-stopped
+    environment:
+      SERVER_NAME: ${SERVER_NAME:-localhost}, php:80
+      MERCURE_PUBLISHER_JWT_KEY: ${CADDY_MERCURE_JWT_SECRET:-!ChangeThisMercureHubJWTSecretKey!}
+      MERCURE_SUBSCRIBER_JWT_KEY: ${CADDY_MERCURE_JWT_SECRET:-!ChangeThisMercureHubJWTSecretKey!}
+      TRUSTED_PROXIES: ${TRUSTED_PROXIES:-127.0.0.0/8,10.0.0.0/8,172.16.0.0/12,192.168.0.0/16}
+      TRUSTED_HOSTS: ^${SERVER_NAME:-example\.com|localhost}|php$$
+      MERCURE_PUBLIC_URL: https://${SERVER_NAME:-localhost}/.well-known/mercure
+      MERCURE_JWT_SECRET: ${CADDY_MERCURE_JWT_SECRET:-!ChangeThisMercureHubJWTSecretKey!}
+      XDEBUG_MODE: "debug"
+    volumes:
+      - ./:/app
+      - ./.docker/caddy/Caddyfile:/etc/caddy/Caddyfile:ro
+      - ./.docker/php/php.dev.ini:/usr/local/etc/php/conf.d/php.dev.ini:ro
+    ports:
+      # HTTP
+      - target: 80
+        published: ${HTTP_PORT:-8080}
+        protocol: tcp
+      # HTTPS
+      - target: 443
+        published: ${HTTPS_PORT:-4430}
+        protocol: tcp
+      # HTTP/3
+      - target: 443
+        published: ${HTTP3_PORT:-4430}
+        protocol: udp
     extra_hosts:
       - "host.docker.internal:host-gateway"
-    volumes:
-      - ${APP_BASE_DIR-.}:/app
-
-  web:
-    image: ghcr.io/lifeboost/nginx-development:latest
-    restart: unless-stopped
-    ports:
-      - "8336:8080"
-    environment:
-      PHP_FPM_HOST: app
-      APP_BASE_DIR: ${APP_BASE_DIR-.}
-    volumes:
-      - ${APP_BASE_DIR-.}/public:/app/public
-    depends_on:
-      - app
 
   db:
     image: mysql:8

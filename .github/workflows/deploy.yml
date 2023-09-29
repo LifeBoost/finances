@@ -7,10 +7,7 @@ on:
 
 env:
   APP_IMAGE_TARGET: app
-  APP_IMAGE_NAME: app-production
-
-  WEB_IMAGE_TARGET: web
-  WEB_IMAGE_NAME: web-production
+  APP_IMAGE_NAME: app-prod
 
 jobs:
   build:
@@ -21,17 +18,12 @@ jobs:
       - uses: actions/checkout@v3
       - name: Build app image
         run: docker build . --file Dockerfile --target $APP_IMAGE_TARGET --tag $APP_IMAGE_NAME --label "runnumber=${GITHUB_RUN_ID}"
-      - name: Build web image
-        run: docker build . --file Dockerfile --target $WEB_IMAGE_TARGET --tag $WEB_IMAGE_NAME --label "runnumber=${GITHUB_RUN_ID}"
       - name: Log in to registry
         run: echo "${{ secrets.GITHUB_TOKEN }}" | docker login ghcr.io -u $ --password-stdin
       - name: Push images
         run: |
           APP_IMAGE_ID=ghcr.io/lifeboost/finances/$APP_IMAGE_NAME
           APP_IMAGE_ID=$(echo $APP_IMAGE_ID | tr '[A-Z]' '[a-z]')
-          
-          WEB_IMAGE_ID=ghcr.io/lifeboost/finances/$WEB_IMAGE_NAME
-          WEB_IMAGE_ID=$(echo $WEB_IMAGE_ID | tr '[A-Z]' '[a-z]')
           
           VERSION=$(echo "${{ github.ref }}" | sed -e 's,.*/\(.*\),\1,')
           [[ "${{ github.ref }}" == "refs/tags/"* ]] && VERSION=$(echo $VERSION | sed -e 's/^v//')
@@ -41,14 +33,10 @@ jobs:
           echo VERSION=$VERSION
           docker tag $APP_IMAGE_NAME $APP_IMAGE_ID:$VERSION
           docker push $APP_IMAGE_ID:$VERSION
-          docker tag $WEB_IMAGE_NAME $WEB_IMAGE_ID:$VERSION
-          docker push $WEB_IMAGE_ID:$VERSION
     
           echo "Push latest image"
           docker tag $APP_IMAGE_NAME $APP_IMAGE_ID:latest
           docker push $APP_IMAGE_ID:latest
-          docker tag $WEB_IMAGE_NAME $WEB_IMAGE_ID:latest
-          docker push $WEB_IMAGE_ID:latest
       - name: Docker logout
         run: docker logout ghcr.io
   deploy:
