@@ -28,7 +28,7 @@ jobs:
           tar -czf $artifactPath/$artifactName /app
           ls -l $artifactPath
       - name: Save artifact
-        uses: actions/upload-artifact@v3
+        uses: actions/upload-artifact@v2
         with:
           name: project-artifact
           path: $artifactPath
@@ -43,7 +43,7 @@ jobs:
         - ./:/app
     steps:
       - name: Download artifact
-        uses: actions/download-artifact@v3
+        uses: actions/download-artifact@v2
         with:
           name: project-artifact
           path: $artifactPath
@@ -62,7 +62,7 @@ jobs:
         - ./:/app
     steps:
       - name: Download artifact
-        uses: actions/download-artifact@v3
+        uses: actions/download-artifact@v2
         with:
           name: project-artifact
           path: $artifactPath
@@ -90,7 +90,7 @@ jobs:
         options: --health-cmd="mysqladmin ping" --health-interval=10s --health-timeout=5s --health-retries=3
     steps:
       - name: Download artifact
-        uses: actions/download-artifact@v3
+        uses: actions/download-artifact@v2
         with:
           name: project-artifact
           path: $artifactPath
@@ -120,7 +120,7 @@ jobs:
         options: --health-cmd="mysqladmin ping" --health-interval=10s --health-timeout=5s --health-retries=3
     steps:
       - name: Download artifact
-        uses: actions/download-artifact@v3
+        uses: actions/download-artifact@v2
         with:
           name: project-artifact
           path: $artifactPath
